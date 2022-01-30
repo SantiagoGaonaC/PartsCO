@@ -1,0 +1,1 @@
+/*Referente a la conexión MySQL*/
