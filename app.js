@@ -30,10 +30,13 @@ app.use(session({ //especificamos el uso de sesiones
     saveUninitialized: true
 }))
 
+//Invocar modulo de conexión de la Base de datos
+const connection = require('./database/db');
+
 app.get('/',(req,res)=>{
     res.send('PartsCO')
 })
 
-app.listen(3000,(req, res )=>{
+app.listen(3000,(req, res )=>{ //puerto 3000
     console.log('Servidor Ejecutado en localhost');
 })
