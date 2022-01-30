@@ -1,22 +1,26 @@
 const express = require('express'); /*Invocamos a express*/
-const req = require('express/lib/request');
-const res = require('express/lib/response');
-
 const app = express();
 
 /*Set de urlencoded para datos del formulario*/
-app.use(express.urlencoded({extended:false}));
+/*datos que enviamos desde forms*/
+app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
 /*Llamado a dontenv*/
 const dontenv = require('dotenv');
 dontenv.config({path:'./env/.env'})
 
+/*Llamado cookie-parser*/
+const cookieParser = require('cookie-parser')
+//app.use(cookieParser)
+
 /*Set y configuración del directorio public*/
 app.use('/resources', express.static('public'));
 app.use('/resources', express.static(__dirname + '/public'));
+app.use(express.static('public'))
 
 /*Motor de plantillas EJS*/
+/*Motor de plantillas para pasar variables*/
 app.set('view engine', 'ejs');
 
 // bcryptjs para la constraseña
@@ -33,9 +37,11 @@ app.use(session({ //especificamos el uso de sesiones
 //Invocar modulo de conexión de la Base de datos
 const connection = require('./database/db');
 
-app.get('/',(req,res)=>{
-    res.send('PartsCO')
-})
+
+//llaamr al router
+app.use('/', require('./routes/router.js'))
+
+
 
 app.listen(3000,(req, res )=>{ //puerto 3000
     console.log('Servidor Ejecutado en localhost');

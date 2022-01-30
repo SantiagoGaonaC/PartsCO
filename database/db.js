@@ -12,10 +12,11 @@ const connection = mysql.createConnection({
 
 connection.connect((error)=>{
     if(error){
-        console.log('Error de conexión:' +error);
+        console.log('Error de conexión es:' +error);
         return; 
     }
     console.log("Conexión exitosa");
 }); //saber si la conexión está OK y si hay error que lo muestre
 
 module.exports = connection; //exportando todo el modulo para llamarlo
+
