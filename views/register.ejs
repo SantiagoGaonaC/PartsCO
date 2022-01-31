@@ -16,12 +16,12 @@
   <body class="text-center">
     
 <main class="form-signin text-center shadow-lg p-3 mb-5">
-  <form class="row g-3 needs-validation" novalidate id="formLogin" action="/login" method="POST">
+  <form class="row g-3 needs-validation" novalidate id="formLogin" action="/register" method="POST">
     <h1 class="h3 mb-3 fw-normal">Registrarse en PartsCO</h1>
     
     <div class="position-relative">
       <label for="nombre" class="form-label">Nombre</label>
-      <input type="text" class="form-control" id="nombre" value="" required>
+      <input type="text" name="nombre" class="form-control" id="nombre" value="" required>
       <!-- Mensajes para validación   -->
       <div class="valid-tooltip">¡Campo válido!</div>
       <div class="invalid-tooltip">Debe completar el nombre.</div>
@@ -29,7 +29,7 @@
 
   <div class="position-relative">
     <label for="apellido" class="form-label">Apellido</label>
-    <input type="text" class="form-control" id="apellido" value="" required>
+    <input type="text" name="apellido" class="form-control" id="apellido" value="" required>
     <!-- Mensajes para validación   -->
     <div class="valid-tooltip">¡Campo válido!</div>
     <div class="invalid-tooltip">Debe completar el apellido.</div>
@@ -37,7 +37,7 @@
 
   <div class="position-relative">
     <label for="email" class="form-label">Email</label>
-    <input type="email" class="form-control" id="email" value="" required>
+    <input type="email" name="email" class="form-control" id="email" value="" required>
     <!-- Mensajes para validación   -->
     <div class="valid-tooltip">¡Campo válido!</div>
     <div class="invalid-tooltip">Debe completar el email.</div>
@@ -45,7 +45,7 @@
 
   <div class="position-relative">
     <label for="password" class="form-label">Contraseña</label>
-    <input type="password" class="form-control" id="password" required>
+    <input type="password" name="password" class="form-control" id="password" required>
     <!-- Mensajes para validación   -->
     <div class="valid-tooltip">¡Campo válido!</div>
     <div class="invalid-tooltip">Debe completar la contraseña.</div>
