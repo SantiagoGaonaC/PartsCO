@@ -12,7 +12,7 @@ dontenv.config({path:'./env/.env'})
 
 /*Llamado cookie-parser*/
 const cookieParser = require('cookie-parser')
-//app.use(cookieParser)
+app.use(cookieParser())
 
 /*Set y configuración del directorio public*/
 app.use('/resources', express.static('public'));
