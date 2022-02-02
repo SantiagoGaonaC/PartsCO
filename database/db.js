@@ -18,5 +18,8 @@ connection.connect((error)=>{
     console.log("Conexión exitosa");
 }); //saber si la conexión está OK y si hay error que lo muestre
 
-module.exports = connection; //exportando todo el modulo para llamarlo
+setInterval(function () {
+    connection.query('SELECT 1');
+}, 5000);
 
+module.exports = connection; //exportando todo el modulo para llamarlo
