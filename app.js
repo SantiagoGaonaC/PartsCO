@@ -41,6 +41,12 @@ const connection = require('./database/db');
 //llaamr al router
 app.use('/', require('./routes/router.js'))
 
+//Para eliminar la cache 
+app.use(function(req, res, next) {
+    if (!req.user)
+        res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    next();
+});
 
 
 app.listen(3000,(req, res )=>{ //puerto 3000

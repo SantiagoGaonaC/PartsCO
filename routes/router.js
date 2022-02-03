@@ -6,7 +6,7 @@ const router = express.Router()
 const authController = require('../controllers/authController')
 
 //rputer para vistas
-router.get('/', (req,res)=>{
+router.get('/', authController.Authenticated, (req,res)=>{
     res.render('index')
 })
 router.get('/login', (req,res)=>{
@@ -20,5 +20,6 @@ router.get('/register', (req,res)=>{
 //router para metodos de controller
 router.post('/register', authController.register)
 router.post('/login', authController.login)
+router.get('/logout', authController.logout)
 
 module.exports = router
