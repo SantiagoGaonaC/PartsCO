@@ -48,7 +48,15 @@ app.use(function(req, res, next) {
     next();
 });
 
-
-app.listen(5000,(req, res )=>{ //puerto 3000
+/*
+app.listen(3000,(req, res )=>{ //puerto 3000
     console.log('Servidor Ejecutado en localhost');
 })
+*/
+
+const host = '0.0.0.0';
+const port = process.env.PORT || 3000;
+
+app.listen(port, host, function() {
+    console.log("Server started.......");
+  });
