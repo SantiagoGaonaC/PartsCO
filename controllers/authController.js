@@ -15,24 +15,76 @@ const { check, validationResult } = require('express-validator');
 
 //metodo para registrarnos
 exports.register = async (req,res)=>{
-
+  email_ex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     try {
         const nombre = req.body.nombre
         const apellido = req.body.apellido
         const email = req.body.email
         const password = req.body.password
-        //hash de la pass
-        let passHash = await bcryptjs.hash(password, 8)
-    
-        conexion.query('INSERT INTO usuarios SET ?', {nombre:nombre, apellido:apellido, email:email, password:passHash}, (error, results)=>{
-            if(error){console.error(error);}
-            res.redirect('/')
-        })
-        
+
+        if(!nombre || !apellido || !email || !password){ //si no ingresó nada se indica que ingrese algo
+          res.render('register',{
+              alert:true,
+              alertTitle: "Advertencia",
+              alertMessage: "Ingrese un usuario y password",
+              alertIcon: 'info',
+              showConfirmButton: true,
+              timer: false,
+              ruta: 'register'
+          })
+        }
+          else if(nombre.length>20 || apellido.length>20 || password.length>30){
+            res.render('register',{
+              alert:true,
+              alertTitle: "Advertencia",
+              alertMessage: "Ingrese datos validos",
+              alertIcon: 'info',
+              showConfirmButton: true,
+              timer: false,
+              ruta: 'register'
+          })}
+          else if(!email_ex.test(email)){
+            res.render('register',{
+              alert:true,
+              alertTitle: "Advertencia",
+              alertMessage: "Digite un email valido",
+              alertIcon: 'info',
+              showConfirmButton: true,
+              timer: false,
+              ruta: 'register'
+            })}
+        else{
+          //hash de la pass
+          let passHash = await bcryptjs.hash(password, 8)
+          conexion.query('INSERT INTO usuarios SET ?', {nombre:nombre, apellido:apellido, email:email, password:passHash}, (error, results)=>{
+            if(error)
+            {
+              if(error.code == 'ER_DUP_ENTRY' || error.errno == 1062)
+              {
+                  console.log('Usuario duplicado')
+                  res.render('register',{
+                    alert:true,
+                    alertTitle: "Advertencia",
+                    alertMessage: "El email ya existe",
+                    alertIcon: 'info',
+                    showConfirmButton: true,
+                    timer: false,
+                    ruta: 'register'
+                  })
+              }
+              else{
+                console.log('Otro error en la query')
+                res.redirect('/')
+              }
+            }else{
+              console.log('Usuario registrado')
+              res.redirect('/')
+            }
+      })
+        }
     } catch (error) {
         console.log(error)
     }
-    
         //sentencia sql para registrar en la tabla usuarios
     }
 
@@ -85,7 +137,7 @@ exports.login = async(req,res)=>{
                         alertMessage: "Login exitoso",
                         alertIcon: 'success',
                         showConfirmButton: false,
-                        timer: 800,
+                        timer: 600,
                         ruta: ''
                     })
                 }
@@ -110,11 +162,11 @@ exports.Authenticated = async (req, res, next)=>{
             return next()
         }
     }else{
-        res.redirect('/login')        
+        res.redirect('/login')
     }
 }
 
 exports.logout = (req, res)=>{
-    res.clearCookie('jwt')   
+    res.clearCookie('jwt')
     return res.redirect('/')
 }
