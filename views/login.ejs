@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>Entrar PartsCO</title>
+    <title>Login PartsCO</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -15,39 +15,35 @@
   </head>
   <body class="text-center">
     
-    <main class="form-signin text-center shadow-lg p-3 mb-5">
-      <form class="row g-3 needs-validation" novalidate id="formLogin" action="/login" method="POST">
-        <h1 class="h3 mb-3 fw-normal">Entrar a PartsCO</h1>
-
-      <div class="position-relative">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" name="email" value="" required>
-        <!-- Mensajes para validación   -->
-        <div class="valid-tooltip">¡Campo válido!</div>
-        <div class="invalid-tooltip">Debe completar el email.</div>
+    <div>
+      <div class="position-absolute top-50 start-50 translate-middle">
+        <main class="form-signin text-center shadow-lg p-3 mb-5">
+          <form class="row g-3 needs-validation" novalidate id="formLogin" action="/login" method="POST">
+            <h1 class="h3 mb-3 fw-normal"><strong>Entrar a PartsCO</strong></h1>
+    
+          <div class="position-relative">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="" required>
+          </div>
+    
+          <div class="position-relative">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+    
+          <div class="col-12">
+            <br>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Enviar</button>
+          </div>
+          </form>
+          <br>
+            <a href="/register" type="button" class="w-100 btn btn-lg btn-primary">Registrarse</a>
+            <br>
+            <br>
+            <p class="mt-1 mb-3 text-muted">&copy;Proyecto integrador PartsCO 2022-1</p>
+        </main>
       </div>
-
-      <div class="position-relative">
-        <label for="password" class="form-label">Contraseña</label>
-        <input type="password" class="form-control" id="password" name="password" required>
-        <!-- Mensajes para validación   -->
-        <div class="valid-tooltip">¡Campo válido!</div>
-        <div class="invalid-tooltip">Debe completar la contraseña.</div>
-      </div>
-
-      <div class="col-12">
-        <br>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Enviar</button>
-      </div>
-      </form>
-      <br>
-        <a href="/register" type="button" class="w-100 btn btn-lg btn-primary">Registrarse</a>
-        <br>
-        <br>
-        <p class="mt-1 mb-3 text-muted">&copy;Proyecto integrador PartsCO 2022-1</p>
-    </main>
-
-    <script src="js/validation.js"></script>
+    </div>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <% if(alert){ %>
@@ -63,6 +59,5 @@
         })
       </script>
     <% } %>
-
   </body>
 </html>

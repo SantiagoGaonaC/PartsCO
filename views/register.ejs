@@ -16,52 +16,43 @@
 
   </head>
   <body class="text-center">
-
-<main class="form-signin text-center shadow-lg p-3 mb-5">
-  <form class="row g-3" id="formLogin" action="/register" method="POST">
-    <h1 class="h3 mb-3 fw-normal">Registrarse en PartsCO</h1>
-    
-    <div class="position-relative">
-      <label for="nombre" class="form-label">Nombre</label>
-      <input type="text" name="nombre" class="form-control" id="nombre" value="">
-      <!-- Mensajes para validación   -->
-      <div class="valid-tooltip">¡Campo válido!</div>
-      <div class="invalid-tooltip">Debe completar el nombre.</div>
-  </div>
-  
-  <div class="position-relative">
-    <label for="apellido" class="form-label">Apellido</label>
-    <input type="text" name="apellido" class="form-control" id="apellido" value="">
-    <!-- Mensajes para validación   -->
-    <div class="valid-tooltip">¡Campo válido!</div>
-    <div class="invalid-tooltip">Debe completar el apellido.</div>
-  </div>
-
-  <div class="position-relative">
-    <label for="email" class="form-label">Email</label>
-    <input type="text" name="email" class="form-control" id="email" value="">
-    <!-- Mensajes para validación   -->
-    <div class="valid-tooltip">¡Campo válido!</div>
-    <div class="invalid-tooltip">Debe completar el email.</div>
-  </div>
-
-  <div class="position-relative">
-    <label for="password" class="form-label">Contraseña</label>
-    <input type="password" name="password" class="form-control" id="password" value="">
-    <!-- Mensajes para validación   -->
-    <div class="valid-tooltip">¡Campo válido!</div>
-    <div class="invalid-tooltip">Debe completar la contraseña.</div>
-  </div>
-
-  <div class="col-12">
-    <button class="w-100 btn btn-primary fw-bold" type="submit">Enviar</button>
-  </div>
-  </form>
-    <br>
-    <a href="/login" type="button" class="w-100 btn btn-primary fw-bold">Login</a>
-    <br>
-    <p class="mt-1 mb-3 text-muted">&copy;Proyecto integrador PartsCO 2022-1</p>
-</main>
+    <div>
+      <div class="position-absolute top-50 start-50 translate-middle">
+        <main class="form-signin text-center shadow-lg p-6 mb-5">
+          <form class="row g-3" id="formLogin" action="/register" method="POST">
+            <h1 class="h3 mb-3 fw-normal"><strong>Registrarse en PartsCO</strong></h1>
+            
+            <div class="position-relative">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" name="nombre" class="form-control" id="nombre" value="">
+          </div>
+          
+          <div class="position-relative">
+            <label for="apellido" class="form-label">Apellido</label>
+            <input type="text" name="apellido" class="form-control" id="apellido" value="">
+          </div>
+        
+          <div class="position-relative">
+            <label for="email" class="form-label">Email</label>
+            <input type="text" name="email" class="form-control" id="email" value="">
+          </div>
+        
+          <div class="position-relative">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" name="password" class="form-control" id="password" value="">
+          </div>
+        
+          <div class="col-12">
+            <button class="w-100 btn btn-primary fw-bold" type="submit">Enviar</button>
+          </div>
+          </form>
+            <br>
+            <a href="/login" type="button" class="w-100 btn btn-primary fw-bold">Login</a>
+            <br>
+            <p class="mt-1 mb-3 text-muted">&copy;Proyecto integrador PartsCO 2022-1</p>
+        </main>
+      </div>
+    </div>
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <% if(alert){ %>

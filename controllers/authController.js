@@ -9,10 +9,7 @@ const conexion = require('../database/db')
 comunicacion asincrona
 la funcion nos va a devolver*/
 const {promisify} = require('util')
-
-//Validacion
-const { check, validationResult } = require('express-validator');
-
+const sweetalerNotify = require('../controllers/sweetalerNotify')
 //metodo para registrarnos
 exports.register = async (req,res)=>{
   email_ex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -23,15 +20,15 @@ exports.register = async (req,res)=>{
         const password = req.body.password
 
         if(!nombre || !apellido || !email || !password){ //si no ingresó nada se indica que ingrese algo
-          res.render('register',{
-              alert:true,
-              alertTitle: "Advertencia",
-              alertMessage: "Ingrese un usuario y password",
-              alertIcon: 'info',
-              showConfirmButton: true,
-              timer: false,
-              ruta: 'register'
-          })
+            res.render('register',{
+                alert:true,
+                alertTitle: "Advertencia",
+                alertMessage: "Ingrese un usuario y password",
+                alertIcon: 'info',
+                showConfirmButton: true,
+                timer: false,
+                ruta: 'register'
+            })
         }
           else if(nombre.length>20 || apellido.length>20 || password.length>30){
             res.render('register',{
@@ -104,7 +101,48 @@ exports.login = async(req,res)=>{
                 timer: false,
                 ruta: 'login'
             })
-        }else{ //en dado caso que si hay datos en el login
+            
+        }else if (email == process.env.CORREO_ADMIN){
+            console.log('EMAIL ADMIN')
+            conexion.query('SELECT * FROM usuarios WHERE email = ?', [email], async (error, results)=>{
+
+                if(results.length==0 || !(await bcryptjs.compare(password, results[0].password))){
+                    //si no coincide la pass
+                    res.render('login',{
+                        alert:true,
+                        alertTitle: "Error",
+                        alertMessage: "Email Contraseña incorrectas admin",
+                        alertIcon: 'error',
+                        showConfirmButton: true,
+                        timer: false,
+                        ruta: 'login'
+                    })
+                }else{ //inicio de sesion OK
+                    //JWT Json web token
+                    const id = results[0].id
+                    const token = jwt.sign({id:id}, process.env.JWT_ADMIN,{
+                        expiresIn: process.env.JWT_ADMIN_TIEMPO
+                    })
+                    console.log(token)
+                    //config de cookies
+                    const opcionesCookiesAdmin = {
+                        expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+                        httpOnly: true
+                    }
+                    res.cookie('jwt', token, opcionesCookiesAdmin) //nombre de la cookie
+                    res.render('login',{
+                        alert:true,
+                        alertTitle: "Conexión exitosa",
+                        alertMessage: "Login exitoso",
+                        alertIcon: 'success',
+                        showConfirmButton: false,
+                        timer: 600,
+                        ruta: 'admin'
+                    })
+                }
+            })
+        }
+        else{ //en dado caso que si hay datos en el login
             conexion.query('SELECT * FROM usuarios WHERE email = ?', [email], async (error, results)=>{
                 //usamos bcrypt de nuevo
                 if(results.length==0 || !(await bcryptjs.compare(password, results[0].password))){
@@ -148,10 +186,30 @@ exports.login = async(req,res)=>{
     }
 }
 
+//autenticación token user
 exports.Authenticated = async (req, res, next)=>{
     if (req.cookies.jwt) {
         try {
             const decodificada = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO)
+            conexion.query('SELECT * FROM usuarios WHERE id = ?', [decodificada.id], (error, results)=>{
+                if(!results){return next()}
+                req.user = results[0]
+                return next()
+            })
+        } catch (error) {
+            console.log(error)
+            return next()
+        }
+    }else{
+        res.redirect('/login')
+    }
+}
+
+//Autenticación token admin
+exports.AuthenticatedAdmin = async (req, res, next)=>{
+    if (req.cookies.jwt) {
+        try {
+            const decodificada = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_ADMIN)
             conexion.query('SELECT * FROM usuarios WHERE id = ?', [decodificada.id], (error, results)=>{
                 if(!results){return next()}
                 req.user = results[0]

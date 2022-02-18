@@ -2,13 +2,9 @@
 //Definir las rutas para las vistas y las rutas que se vana utilizar al llamar al controlador
 const express = require('express')
 const router = express.Router()
-
 const authController = require('../controllers/authController')
 
-const {body, validationResult} = require('express-validator')
-const authValidator = require('../controllers/authValidator')
-
-//rputer para vistas
+//router para vistas
 router.get('/', authController.Authenticated, (req,res)=>{
     res.render('index')
 })
@@ -17,6 +13,9 @@ router.get('/login', (req,res)=>{
 })
 router.get('/register', (req,res)=>{
     res.render('register', {alert:false})
+})
+router.get('/admin', authController.AuthenticatedAdmin, (req,res)=>{
+    res.render('admin')
 })
 
 //router para metodos de controller
