@@ -9,7 +9,7 @@ const conexion = require('../database/db')
 comunicacion asincrona
 la funcion nos va a devolver*/
 const {promisify} = require('util')
-const sweetalerNotify = require('../controllers/sweetalerNotify')
+const NotifySweetAlert = require('../models/NotifySweetAlert')
 //metodo para registrarnos
 exports.register = async (req,res)=>{
   email_ex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -85,6 +85,81 @@ exports.register = async (req,res)=>{
         //sentencia sql para registrar en la tabla usuarios
     }
 
+exports.registerAdmin = async (req,res)=>{
+  email_ex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    try {
+        const nombre = req.body.nombre
+        const apellido = req.body.apellido
+        const email = req.body.email
+        const password = req.body.password
+        const rol = req.body.rol
+
+        if(!nombre || !apellido || !email || !password){ //si no ingresó nada se indica que ingrese algo
+            res.render('create',{
+                alert:true,
+                alertTitle: "Advertencia",
+                alertMessage: "Ingrese un usuario y password ADMIN",
+                alertIcon: 'info',
+                showConfirmButton: true,
+                timer: false,
+                ruta: 'create'
+            })
+        }
+          else if(nombre.length>20 || apellido.length>20 || password.length>30){
+            res.render('create',{
+              alert:true,
+              alertTitle: "Advertencia",
+              alertMessage: "Ingrese datos validos",
+              alertIcon: 'info',
+              showConfirmButton: true,
+              timer: false,
+              ruta: 'create'
+          })}
+          else if(!email_ex.test(email)){
+            res.render('create',{
+              alert:true,
+              alertTitle: "Advertencia",
+              alertMessage: "Digite un email valido",
+              alertIcon: 'info',
+              showConfirmButton: true,
+              timer: false,
+              ruta: 'create'
+            })}
+        else{
+          //hash de la pass
+          let passHash = await bcryptjs.hash(password, 8)
+          conexion.query('INSERT INTO usuarios SET ?', {nombre:nombre, apellido:apellido, email:email, password:passHash, rol:rol}, (error, results)=>{
+            if(error)
+            {
+              if(error.code == 'ER_DUP_ENTRY' || error.errno == 1062)
+              {
+                  console.log('Usuario duplicado')
+                  res.render('create',{
+                    alert:true,
+                    alertTitle: "Advertencia",
+                    alertMessage: "El email ya existe",
+                    alertIcon: 'info',
+                    showConfirmButton: true,
+                    timer: false,
+                    ruta: 'create'
+                  })
+              }
+              else{
+                console.log('Otro error en la query')
+                res.redirect('/admin')
+              }
+            }else{
+              console.log('Usuario registrado')
+              res.redirect('/admin')
+            }
+      })
+        }
+    } catch (error) {
+        console.log(error)
+    }
+        //sentencia sql para registrar en la tabla usuarios
+}
+
 exports.login = async(req,res)=>{
     try {
         const email = req.body.email
@@ -92,31 +167,13 @@ exports.login = async(req,res)=>{
         console.log(email,password)
 
         if(!email || !password){ //si no ingresó nada se indica que ingrese algo
-            res.render('login',{
-                alert:true,
-                alertTitle: "Advertencia",
-                alertMessage: "Ingrese un usuario y password",
-                alertIcon: 'info',
-                showConfirmButton: true,
-                timer: false,
-                ruta: 'login'
-            })
-            
+            res.render('login',NotifySweetAlert.NoEmailNoPassword())
         }else if (email == process.env.CORREO_ADMIN){
             console.log('EMAIL ADMIN')
             conexion.query('SELECT * FROM usuarios WHERE email = ?', [email], async (error, results)=>{
-
                 if(results.length==0 || !(await bcryptjs.compare(password, results[0].password))){
                     //si no coincide la pass
-                    res.render('login',{
-                        alert:true,
-                        alertTitle: "Error",
-                        alertMessage: "Email Contraseña incorrectas admin",
-                        alertIcon: 'error',
-                        showConfirmButton: true,
-                        timer: false,
-                        ruta: 'login'
-                    })
+                    res.render('login',NotifySweetAlert.AdminPassEmail())
                 }else{ //inicio de sesion OK
                     //JWT Json web token
                     const id = results[0].id
@@ -130,15 +187,7 @@ exports.login = async(req,res)=>{
                         httpOnly: true
                     }
                     res.cookie('jwt', token, opcionesCookiesAdmin) //nombre de la cookie
-                    res.render('login',{
-                        alert:true,
-                        alertTitle: "Conexión exitosa",
-                        alertMessage: "Login exitoso",
-                        alertIcon: 'success',
-                        showConfirmButton: false,
-                        timer: 600,
-                        ruta: 'admin'
-                    })
+                    res.render('login',NotifySweetAlert.AdminLoginUp())
                 }
             })
         }
@@ -147,15 +196,7 @@ exports.login = async(req,res)=>{
                 //usamos bcrypt de nuevo
                 if(results.length==0 || !(await bcryptjs.compare(password, results[0].password))){
                     //si no coincide la pass
-                    res.render('login',{
-                        alert:true,
-                        alertTitle: "Error",
-                        alertMessage: "Email y/o contraseña incorrectas",
-                        alertIcon: 'error',
-                        showConfirmButton: true,
-                        timer: false,
-                        ruta: 'login'
-                    })
+                    res.render('login',NotifySweetAlert.UserPassEmail())
                 }else{ //inicio de sesion OK
                     //JWT Json web token
                     const id = results[0].id
@@ -169,15 +210,7 @@ exports.login = async(req,res)=>{
                         httpOnly: true
                     }
                     res.cookie('jwt', token, opcionesCookies) //nombre de la cookie
-                    res.render('login',{
-                        alert:true,
-                        alertTitle: "Conexión exitosa",
-                        alertMessage: "Login exitoso",
-                        alertIcon: 'success',
-                        showConfirmButton: false,
-                        timer: 600,
-                        ruta: ''
-                    })
+                    res.render('login',NotifySweetAlert.UserLoginUp())
                 }
             }) //se busca el usuario en la tabla
         }

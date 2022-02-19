@@ -3,6 +3,7 @@
 const express = require('express')
 const router = express.Router()
 const authController = require('../controllers/authController')
+const conexion = require('../database/db')
 
 //router para vistas
 router.get('/', authController.Authenticated, (req,res)=>{
@@ -15,12 +16,24 @@ router.get('/register', (req,res)=>{
     res.render('register', {alert:false})
 })
 router.get('/admin', authController.AuthenticatedAdmin, (req,res)=>{
-    res.render('admin')
+    conexion.query('SELECT * FROM usuarios',(error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('admin', {results:results});
+        }
+    })
 })
+
+router.get('/create', authController.AuthenticatedAdmin, (req,res)=>{
+    res.render('create', {alert:false})
+})
+
 
 //router para metodos de controller
 router.post('/register', authController.register)
 router.post('/login', authController.login)
+router.post('/create', authController.registerAdmin)
 router.get('/logout', authController.logout)
 
 module.exports = router
