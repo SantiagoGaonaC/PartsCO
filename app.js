@@ -17,6 +17,7 @@ app.use(cookieParser())
 /*Set y configuración del directorio public*/
 app.use('/resources', express.static('public'));
 app.use('/resources', express.static(__dirname + '/public'));
+
 app.use(express.static('public'))
 
 /*Motor de plantillas EJS*/
@@ -54,7 +55,20 @@ app.listen(3000,(req, res )=>{ //puerto 3000
 })
 */
 
-//AdminBro
+//Directorio de uso PARA SCRIPTS DE JS
+app.use(express.static(__dirname + '/public/js'));
+
+//CSS
+app.use(express.static(__dirname + '/public/css'));
+app.use('/public/css', express.static(__dirname + '/public/css'));
+app.use('/static', express.static(__dirname + '/public/css'));
+
+//IMG
+app.use(express.static(__dirname + '/public/img'));
+app.use('/public/img', express.static(__dirname + '/public/img'));
+app.use('/static', express.static(__dirname + '/public/img'));
+
+
 
 const host = '0.0.0.0';
 const port = process.env.PORT || 3000;
@@ -62,3 +76,4 @@ const port = process.env.PORT || 3000;
 app.listen(port, host, function() {
     console.log("Server started.......");
   });
+

@@ -54,6 +54,19 @@ router.get('/delete/:id', authController.AuthenticatedAdmin, (req, res) => {
     })
 });
 
+//PANEL PRINCIPAL ADMIN
+router.get('/panel', authController.AuthenticatedAdmin, (req,res)=>{
+    res.render('panel', {alert:false})
+})
+
+
+//NAV
+router.get('/parcial/nav.ejs', authController.AuthenticatedAdmin, (req,res)=>{
+    res.render('parcial/nav.ejs')
+})
+router.get('/parcial/logout', authController.AuthenticatedAdmin, (req,res)=>{
+    res.render('/parcial/logout')
+})
 
 //router para metodos de controller
 router.post('/register', authController.register)
@@ -61,5 +74,6 @@ router.post('/login', authController.login)
 router.post('/create', authController.registerAdmin)
 router.post('/update', crud.update)
 router.get('/logout', authController.logout)
+
 
 module.exports = router

@@ -3,18 +3,29 @@ class NotifySweetAlert {
       return {
         alert:true,
         alertTitle: "Advertencia",
-        alertMessage: "Ingrese un usuario y password",
+        alertMessage: "Ingrese un usuario y password validos",
         alertIcon: 'info',
         showConfirmButton: true,
         timer: false,
         ruta: 'login'
       }
   }
+  NoExistEmail(){
+    return {
+      alert:true,
+      alertTitle: "Error",
+      alertMessage: "El correo electrónico que ingresaste no está conectado a una cuenta.",
+      alertIcon: 'info',
+      showConfirmButton: true,
+      timer: false,
+      ruta: 'login'
+    }
+  }
   AdminPassEmail() {
       return {
         alert:true,
         alertTitle: "Error",
-        alertMessage: "Email Contraseña incorrectas admin",
+        alertMessage: "Email y/o contraseña incorrecta",
         alertIcon: 'error',
         showConfirmButton: true,
         timer: false,
@@ -36,7 +47,7 @@ class NotifySweetAlert {
     return{
       alert:true,
       alertTitle: "Error",
-      alertMessage: "Email y/o contraseña incorrectas",
+      alertMessage: "Email y/o contraseña incorrecta",
       alertIcon: 'error',
       showConfirmButton: true,
       timer: false,

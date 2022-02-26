@@ -109,96 +109,105 @@ exports.login = async(req,res)=>{
         const password = req.body.password
         console.log(email,password)
 
-        conexion.query("SELECT rol FROM usuarios WHERE email = ?", [email], async (error, results)=>{
-          console.log("Error: "+error)
-
-          Object.keys(results).forEach(function(key){
-            var row = results[key];
-            console.log(row.rol)
-            if (row.rol == 'admin'){
-              console.log("admin")
-
-              if(!email || !password){ //si no ingresó nada se indica que ingrese algo
-                res.render('login',NotifySweetAlert.NoEmailNoPassword())
+        if(!email || !password){
+          res.render('login',NotifySweetAlert.NoEmailNoPassword())
+        }else{
+          conexion.query("SELECT rol FROM usuarios WHERE email = ?", [email], async (error, results)=>{
+            if(error){
+              console.log("Error encontrado: "+ error)
+            }else if(results[0] == undefined){
+              res.render('login',NotifySweetAlert.NoExistEmail())
             }else{
-                conexion.query('SELECT * FROM usuarios WHERE email = ?', [email], async (error, results)=>{
-                    if(results.length==0 || !(await bcryptjs.compare(password, results[0].password))){
-                        //si no coincide la pass
-                        res.render('login',NotifySweetAlert.AdminPassEmail())
-                    }else{ //inicio de sesion OK
-                        //JWT Json web token
-                        const id = results[0].id
-                        const token = jwtAdmin.sign({id:id}, process.env.JWT_ADMIN,{
-                            expiresIn: process.env.JWT_ADMIN_TIEMPO
-                        })
-                        console.log(token)
-                        //config de cookies
-                        const opcionesCookiesAdmin = {
-                            expires: new Date(Date.now()+process.env.JWT_ADMIN_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
-                            httpOnly: true
+              Object.keys(results).forEach(function(key){
+                var row = results[key];
+                console.log(row.rol)
+                if (row.rol == 'admin'){
+                  console.log("admin")
+                  if(!email || !password){ //si no ingresó nada se indica que ingrese algo
+                    res.render('login',NotifySweetAlert.NoEmailNoPassword())
+                }else{
+                    conexion.query('SELECT * FROM usuarios WHERE email = ?', [email], async (error, results)=>{
+                        if(results.length==0 || !(await bcryptjs.compare(password, results[0].password))){
+                            //si no coincide la pass
+                            res.render('login',NotifySweetAlert.AdminPassEmail())
+                        }else{ //inicio de sesion OK
+                            //JWT Json web token
+                            conexion.query('UPDATE usuarios SET sesion=CURDATE()  WHERE email = ?', [email]);
+                            const id = results[0].id
+                            const token = jwtAdmin.sign({id:id}, process.env.JWT_ADMIN,{
+                                expiresIn: process.env.JWT_ADMIN_TIEMPO
+                            })
+                            console.log(token)
+                            //config de cookies
+                            const opcionesCookiesAdmin = {
+                                expires: new Date(Date.now()+process.env.JWT_ADMIN_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+                                httpOnly: true
+                            }
+                            res.cookie('jwtAdmin', token, opcionesCookiesAdmin) //nombre de la cookie
+                            res.render('login',NotifySweetAlert.AdminLoginUp())
                         }
-                        res.cookie('jwtAdmin', token, opcionesCookiesAdmin) //nombre de la cookie
-                        res.render('login',NotifySweetAlert.AdminLoginUp())
-                    }
-                })
-            }
-
-            }else if (row.rol == 'empleado'){
-              console.log("empleado")
-              if(!email || !password){ //si no ingresó nada se indica que ingrese algo
-                res.render('login',NotifySweetAlert.NoEmailNoPassword())
-            }else{
-                conexion.query('SELECT * FROM usuarios WHERE email = ?', [email], async (error, results)=>{
-                    if(results.length==0 || !(await bcryptjs.compare(password, results[0].password))){
-                        //si no coincide la pass
-                        res.render('login',NotifySweetAlert.AdminPassEmail())
-                    }else{ //inicio de sesion OK
-                        //JWT Json web token
-                        const id = results[0].id
-                        const token = jwtAdmin.sign({id:id}, process.env.JWT_ADMIN,{ //EDITAR JWT
-                            expiresIn: process.env.JWT_ADMIN_TIEMPO //EDITAR JWT
-                        })
-                        console.log(token)
-                        //config de cookies
-                        const opcionesCookiesAdmin = {
-                            expires: new Date(Date.now()+process.env.JWT_ADMIN_COOKIE_EXPIRES * 24 * 60 * 60 * 1000), //EDITAR JWT
-                            httpOnly: true
-                        }
-                        res.cookie('jwtAdmin', token, opcionesCookiesAdmin) //nombre de la cookie EDITAR COOKIE
-                        res.render('login',NotifySweetAlert.AdminLoginUp())
-                    }
-                })
-            }
-            }else if (row.rol == 'usuario'){
-              console.log("usuario")
-              if(!email || !password){ //si no ingresó nada se indica que ingrese algo
-                res.render('login',NotifySweetAlert.NoEmailNoPassword())
-            }else{
-              conexion.query('SELECT * FROM usuarios WHERE email = ?', [email], async (error, results)=>{
-                //usamos bcrypt de nuevo
-                if(results.length==0 || !(await bcryptjs.compare(password, results[0].password))){
-                    //si no coincide la pass
-                    res.render('login',NotifySweetAlert.UserPassEmail())
-                }else{ //inicio de sesion OK
-                    //JWT Json web token
-                    const id = results[0].id
-                    const token = jwt.sign({id:id}, process.env.JWT_SECRETO,{
-                        expiresIn: process.env.JWT_TIEMPO_EXPIRA
                     })
-                    console.log(token)
-                    //config de cookies
-                    const opcionesCookies = {
-                        expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
-                        httpOnly: true
-                    }
-                    res.cookie('jwt', token, opcionesCookies) //nombre de la cookie
-                    res.render('login',NotifySweetAlert.UserLoginUp())
                 }
-              }) //se busca el usuario en la tabla
+                }else if (row.rol == 'empleado'){
+                  console.log("empleado")
+                  if(!email || !password){ //si no ingresó nada se indica que ingrese algo
+                    res.render('login',NotifySweetAlert.NoEmailNoPassword())
+                }else{
+                    conexion.query('SELECT * FROM usuarios WHERE email = ?', [email], async (error, results)=>{
+                        if(results.length==0 || !(await bcryptjs.compare(password, results[0].password))){
+                            //si no coincide la pass
+                            res.render('login',NotifySweetAlert.AdminPassEmail())
+                        }else{ //inicio de sesion OK
+                            //JWT Json web token
+                            conexion.query('UPDATE usuarios SET sesion=CURDATE()  WHERE email = ?', [email]);
+                            const id = results[0].id
+                            const token = jwtAdmin.sign({id:id}, process.env.JWT_ADMIN,{ //EDITAR JWT
+                                expiresIn: process.env.JWT_ADMIN_TIEMPO //EDITAR JWT
+                            })
+                            console.log(token)
+                            //config de cookies
+                            const opcionesCookiesAdmin = {
+                                expires: new Date(Date.now()+process.env.JWT_ADMIN_COOKIE_EXPIRES * 24 * 60 * 60 * 1000), //EDITAR JWT
+                                httpOnly: true
+                            }
+                            res.cookie('jwtAdmin', token, opcionesCookiesAdmin) //nombre de la cookie EDITAR COOKIE
+                            res.render('login',NotifySweetAlert.AdminLoginUp())
+                        }
+                    })
+                }
+                }else if (row.rol == 'usuario'){
+                  console.log("usuario")
+                  if(!email || !password){ //si no ingresó nada se indica que ingrese algo
+                    res.render('login',NotifySweetAlert.NoEmailNoPassword())
+                }else{
+                  conexion.query('SELECT * FROM usuarios WHERE email = ?', [email], async (error, results)=>{
+                    //usamos bcrypt de nuevo
+                    if(results.length==0 || !(await bcryptjs.compare(password, results[0].password))){
+                        //si no coincide la pass
+                        res.render('login',NotifySweetAlert.UserPassEmail())
+                    }else{ //inicio de sesion OK
+                        //JWT Json web token
+                        conexion.query('UPDATE usuarios SET sesion=CURDATE()  WHERE email = ?', [email]);
+                        const id = results[0].id
+                        const token = jwt.sign({id:id}, process.env.JWT_SECRETO,{
+                            expiresIn: process.env.JWT_TIEMPO_EXPIRA
+                        })
+                        console.log(token)
+                        //config de cookies
+                        const opcionesCookies = {
+                            expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+                            httpOnly: true
+                        }
+                        res.cookie('jwt', token, opcionesCookies) //nombre de la cookie
+                        res.render('login',NotifySweetAlert.UserLoginUp())
+                    }
+                  }) //se busca el usuario en la tabla
+                }
+                }
+                })
             }
-            }
-            })
-        });        
+          });
+        }      
     } catch (error) {
       console.log(error)
     }
