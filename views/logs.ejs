@@ -1,0 +1,98 @@
+<%- include("./template/head.ejs") %>
+    <title>Admin PartsCO</title>
+    <meta name="description" content="">
+  </head>
+
+  <body>
+    <header>
+      <section>
+        <%- include("./template/nav.ejs") %>
+      </section>
+    </header>
+
+
+    <div class="container shadow-lg mb-5 container-fluid position-absolute top-50 start-50 translate-middle">
+      <div class="row">
+        <section class="">
+          <div class="container  mb-5">
+            <h1 class="text-center mt-4"> Información usuarios</h1>
+            <div class="container mb-2">
+              <a href="/create" id="create" name="create" class="btn btn-outline-dark mt-4"><i class="fa-solid fa-user-plus"> Crear usuario</i></a>
+            </div>
+            <table id="usuarios" class="table table-striped table-bordered text-center table-hover nowrap" style="width:100%">
+              <thead>
+                <tr class="table-dark text-white">
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Apellido</th>
+                  <th scope="col">Última Sesión</th>
+    
+                </tr>
+              </thead>
+              <tbody>
+                <% results.forEach((usuarios)=>{ %>
+                <tr>
+                  <td><%= usuarios.id %></td>
+                  <td><%= usuarios.nombre %></td>
+                  <td><%= usuarios.apellido %></td>
+                  <td><%= usuarios.sesion %></td>
+                </tr>
+                <%})%>
+              </tbody>
+            </table>
+          </div>
+          <hr>
+        </section>
+
+      </div>
+      <div class="row">
+        <div class="row">
+          <section class="container pb-10">
+            <%- include("./template/options.ejs") %>
+          </section>
+        </div>
+
+      </div>
+    </div>
+    
+    
+
+    <script>
+      $(document).ready(function() {
+        $('#usuarios').DataTable({
+          "responsive": true,
+          "language": {
+                "lengthMenu": "Mostrar _MENU_ registros",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sSearch": "Buscar:",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast":"Último",
+                    "sNext":"Siguiente",
+                    "sPrevious": "Anterior"
+			     },
+			     "sProcessing":"Procesando...",
+            }
+        });
+      });
+
+      function confirmar(id){
+        Swal.fire({
+          title: '¿Confirma eliminar el registro: '+id+'?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: 'Confirmar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location = '/delete/'+id;
+        }
+      })
+      }
+    </script>
+  </body>
+</html>

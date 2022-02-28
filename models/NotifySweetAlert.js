@@ -40,7 +40,7 @@ class NotifySweetAlert {
       alertIcon: 'success',
       showConfirmButton: false,
       timer: 600,
-      ruta: 'admin'
+      ruta: 'panel'
     }
   }
   UserPassEmail(){

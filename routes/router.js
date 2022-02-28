@@ -59,6 +59,16 @@ router.get('/panel', authController.AuthenticatedAdmin, (req,res)=>{
     res.render('panel', {alert:false})
 })
 
+//Logs USUARIO | Historial
+router.get('/logs', authController.AuthenticatedAdmin, (req,res)=>{
+    conexion.query('SELECT * FROM usuarios', (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('logs.ejs', {results:results});
+        }
+    })
+})
 
 //NAV
 router.get('/parcial/nav.ejs', authController.AuthenticatedAdmin, (req,res)=>{

@@ -132,7 +132,7 @@ exports.login = async(req,res)=>{
                             res.render('login',NotifySweetAlert.AdminPassEmail())
                         }else{ //inicio de sesion OK
                             //JWT Json web token
-                            conexion.query('UPDATE usuarios SET sesion=CURDATE()  WHERE email = ?', [email]);
+                            conexion.query('UPDATE usuarios SET sesion=NOW() WHERE email = ?', [email]);
                             const id = results[0].id
                             const token = jwtAdmin.sign({id:id}, process.env.JWT_ADMIN,{
                                 expiresIn: process.env.JWT_ADMIN_TIEMPO
@@ -159,7 +159,7 @@ exports.login = async(req,res)=>{
                             res.render('login',NotifySweetAlert.AdminPassEmail())
                         }else{ //inicio de sesion OK
                             //JWT Json web token
-                            conexion.query('UPDATE usuarios SET sesion=CURDATE()  WHERE email = ?', [email]);
+                            conexion.query('UPDATE usuarios SET sesion=NOW() WHERE email = ?', [email]);
                             const id = results[0].id
                             const token = jwtAdmin.sign({id:id}, process.env.JWT_ADMIN,{ //EDITAR JWT
                                 expiresIn: process.env.JWT_ADMIN_TIEMPO //EDITAR JWT
@@ -187,7 +187,7 @@ exports.login = async(req,res)=>{
                         res.render('login',NotifySweetAlert.UserPassEmail())
                     }else{ //inicio de sesion OK
                         //JWT Json web token
-                        conexion.query('UPDATE usuarios SET sesion=CURDATE()  WHERE email = ?', [email]);
+                        conexion.query('UPDATE usuarios SET sesion=NOW()  WHERE email = ?', [email]);
                         const id = results[0].id
                         const token = jwt.sign({id:id}, process.env.JWT_SECRETO,{
                             expiresIn: process.env.JWT_TIEMPO_EXPIRA
