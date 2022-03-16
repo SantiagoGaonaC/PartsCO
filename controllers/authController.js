@@ -232,6 +232,7 @@ exports.Authenticated = async (req, res, next)=>{
     }
 }
 
+
 //Autenticación token admin
 exports.AuthenticatedAdmin = async (req, res, next)=>{
     if (req.cookies.jwtAdmin) {
