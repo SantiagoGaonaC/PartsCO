@@ -21,8 +21,14 @@ exports.register = async (req,res)=>{
         const email = req.body.email
         const password = req.body.password
         const usuario = "usuario"
+        const telefono = req.body.telefono
+        const direccion = req.body.direccion
 
-        if(!nombre || !apellido || !email || !password){ //si no ingresó nada se indica que ingrese algo
+        const ndocumento = req.body.ndocumento
+        const tdocumento = req.body.tdocumento
+        const documento = tdocumento + ' ' +ndocumento
+        
+        if(!nombre || !apellido || !email || !password || !direccion || !telefono){ //si no ingresó nada se indica que ingrese algo
             res.render('register',NotifySweetAlert.NadaRegisterUser())
         }
           else if(nombre.length>20 || apellido.length>20 || password.length>30){
@@ -34,7 +40,7 @@ exports.register = async (req,res)=>{
         else{
           //hash de la pass
           let passHash = await bcryptjs.hash(password, 8)
-          conexion.query('INSERT INTO usuarios SET ?', {nombre:nombre, apellido:apellido, email:email, password:passHash, rol:usuario}, (error, results)=>{
+          conexion.query('INSERT INTO usuarios SET ?', {nombre:nombre, apellido:apellido, email:email, password:passHash, rol:usuario, direccion:direccion, telefono:telefono, documento:documento}, (error, results)=>{
             if(error)
             {
               if(error.code == 'ER_DUP_ENTRY' || error.errno == 1062)
@@ -44,6 +50,7 @@ exports.register = async (req,res)=>{
               }
               else{
                 console.log('Otro error en la query')
+                console.log(error)
                 res.redirect('/')
               }
             }else{
@@ -112,6 +119,10 @@ exports.login = async(req,res)=>{
         if(!email || !password){
           res.render('login',NotifySweetAlert.NoEmailNoPassword())
         }else{
+
+
+
+
           conexion.query("SELECT rol FROM usuarios WHERE email = ?", [email], async (error, results)=>{
             if(error){
               console.log("Error encontrado: "+ error)
@@ -132,7 +143,23 @@ exports.login = async(req,res)=>{
                             res.render('login',NotifySweetAlert.AdminPassEmail())
                         }else{ //inicio de sesion OK
                             //JWT Json web token
-                            conexion.query('UPDATE usuarios SET sesion=NOW() WHERE email = ?', [email]);
+                            
+                            //conexion.query('UPDATE sesiones SET fecha_sesion=NOW() WHERE email = ?', [email]);
+                            connection.query("SELECT idusuario FROM usuarios WHERE email = ?",[email], function(error, results, fields) {
+                              if(error) {
+                                  console.log(error);
+                                  return;
+                              }
+                              const rows = JSON.parse(JSON.stringify(results[0]));
+                              const id = rows[Object.keys(rows)];
+          
+                              // here you can access rows
+                              console.log("ID:",id);
+                              //conexion.query('UPDATE sesiones SET fecha_sesion=NOW() WHERE usuarios_idusuario = ?', [id]);
+                              conexion.query('INSERT INTO sesiones (usuarios_idusuario, fecha_sesion) VALUES (?, NOW())', [id]);
+                          });
+
+                            //conexion.query('UPDATE usuarios SET sesion=NOW() WHERE email = ?', [email]);
                             const id = results[0].id
                             const token = jwtAdmin.sign({id:id}, process.env.JWT_ADMIN,{
                                 expiresIn: process.env.JWT_ADMIN_TIEMPO
@@ -159,7 +186,24 @@ exports.login = async(req,res)=>{
                             res.render('login',NotifySweetAlert.AdminPassEmail())
                         }else{ //inicio de sesion OK
                             //JWT Json web token
-                            conexion.query('UPDATE usuarios SET sesion=NOW() WHERE email = ?', [email]);
+
+                            //conexion.query('UPDATE sesiones SET fecha_sesion=NOW() WHERE email = ?', [email]);
+                            //conexion.query('UPDATE usuarios SET sesion=NOW() WHERE email = ?', [email]);
+                            connection.query("SELECT idusuario FROM usuarios WHERE email = ?",[email], function(error, results, fields) {
+                              if(error) {
+                                  console.log(error);
+                                  return;
+                              }
+                              const rows = JSON.parse(JSON.stringify(results[0]));
+                              const id = rows[Object.keys(rows)];
+          
+                              // here you can access rows
+                              console.log("ID:",id);
+                              //conexion.query('UPDATE sesiones SET fecha_sesion=NOW() WHERE usuarios_idusuario = ?', [id]);
+                              conexion.query('INSERT INTO sesiones (usuarios_idusuario, fecha_sesion) VALUES (?, NOW())', [id]);
+                          });
+
+
                             const id = results[0].id
                             const token = jwtAdmin.sign({id:id}, process.env.JWT_ADMIN,{ //EDITAR JWT
                                 expiresIn: process.env.JWT_ADMIN_TIEMPO //EDITAR JWT
@@ -187,7 +231,24 @@ exports.login = async(req,res)=>{
                         res.render('login',NotifySweetAlert.UserPassEmail())
                     }else{ //inicio de sesion OK
                         //JWT Json web token
-                        conexion.query('UPDATE usuarios SET sesion=NOW()  WHERE email = ?', [email]);
+
+                        connection.query("SELECT idusuario FROM usuarios WHERE email = ?",[email], function(error, results, fields) {
+                          if(error) {
+                              console.log(error);
+                              return;
+                          }
+                          const rows = JSON.parse(JSON.stringify(results[0]));
+                          const id = rows[Object.keys(rows)];
+      
+                          // here you can access rows
+                          console.log("ID:",id);
+                          //conexion.query('UPDATE sesiones SET fecha_sesion=NOW() WHERE usuarios_idusuario = ?', [id]);
+                          conexion.query('INSERT INTO sesiones (usuarios_idusuario, fecha_sesion) VALUES (?, NOW())', [id]);
+
+                      });
+                      
+                        //conexion.query('UPDATE sesiones SET fecha_sesion=NOW() WHERE email = ?', [email]);
+                        //conexion.query('UPDATE usuarios SET sesion=NOW()  WHERE email = ?', [email]);
                         const id = results[0].id
                         const token = jwt.sign({id:id}, process.env.JWT_SECRETO,{
                             expiresIn: process.env.JWT_TIEMPO_EXPIRA

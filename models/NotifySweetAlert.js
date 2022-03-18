@@ -69,7 +69,7 @@ class NotifySweetAlert {
     return{
       alert:true,
       alertTitle: "Advertencia",
-      alertMessage: "Ingrese un usuario y password",
+      alertMessage: "Ingrese los datos del formulario completos",
       alertIcon: 'info',
       showConfirmButton: true,
       timer: false,

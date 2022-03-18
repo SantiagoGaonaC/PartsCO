@@ -18,25 +18,69 @@
     <div>
       <div class="position-absolute top-50 start-50 translate-middle">
         <main class="form-signin text-center shadow-lg p-6 mb-5">
-          <form class="row g-3" id="formLogin" action="/register" method="POST">
+          <form class="row g-3 justify-content-center" id="formLogin" action="/register" method="POST">
             <h1 class="h3 mb-3 fw-normal"><strong>Registrarse en PartsCO</strong></h1>
             
+
+            <div class="row">
+              <div class="col-md-6 mb-4">
+
+                <div class="position-relative">
+                  <label for="nombre" class="form-label">Nombre</label>
+                  <input type="text" name="nombre" class="form-control" id="nombre" value="">
+              </div>
+
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="position-relative">
+                  <label for="apellido" class="form-label">Apellido</label>
+                  <input type="text" name="apellido" class="form-control" id="apellido" value="">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-4">
+
+                <div class="position-relative">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="text" name="email" class="form-control" id="email" value="">
+                </div>
+
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="position-relative">
+                  <label for="email" class="form-label">Teléfono</label>
+                  <input type="number" name="telefono" class="form-control" id="telefono" value="">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="position-relative">
+                  <label for="email" class="form-label">Número Documento</label>
+                  <input type="number" name="ndocumento" class="form-control" id="ndocumento" value="">
+                </div>
+              </div>
+
+              <div class="col-md-4 mb-4">
+                <div class="position-relative">
+                  <label for="rol" class="form-label ">Tipo Documento</label>
+                  <select class="form-select " name="tdocumento" id="tdocumento" tabindex="2">
+                      <option value="cedula">Cédula</option>
+                      <option value="nit">Nit</option>
+                    </select>
+                </div>
+              </div>
+            </div>
+       
             <div class="position-relative">
-              <label for="nombre" class="form-label">Nombre</label>
-              <input type="text" name="nombre" class="form-control" id="nombre" value="">
-          </div>
-          
-          <div class="position-relative">
-            <label for="apellido" class="form-label">Apellido</label>
-            <input type="text" name="apellido" class="form-control" id="apellido" value="">
-          </div>
-        
-          <div class="position-relative">
-            <label for="email" class="form-label">Email</label>
-            <input type="text" name="email" class="form-control" id="email" value="">
-          </div>
-        
-          <div class="position-relative">
+              <label for="email" class="form-label">Direccion</label>
+              <input type="text" name="direccion" class="form-control" id="direccion" value="">
+            </div>
+
+          <div class="position-relative col-xs-4">
             <label for="password" class="form-label">Contraseña</label>
             <input type="password" name="password" class="form-control" id="password" value="">
           </div>
