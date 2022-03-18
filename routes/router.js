@@ -61,13 +61,13 @@ router.get('/panel', authController.AuthenticatedAdmin, (req,res)=>{
 
 //Logs USUARIO | Historial
 router.get('/logs', authController.AuthenticatedAdmin, (req,res)=>{
-    conexion.query('SELECT * FROM usuarios', (error, results)=>{
+    conexion.query('SELECT * FROM sesiones', (error, results)=>{
         if(error){
             throw error;
         }else{
             res.render('logs.ejs', {results:results});
         }
-    })
+    });
 })
 
 //NAV

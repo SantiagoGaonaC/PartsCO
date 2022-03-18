@@ -120,9 +120,7 @@ exports.login = async(req,res)=>{
           res.render('login',NotifySweetAlert.NoEmailNoPassword())
         }else{
 
-
-
-
+          
           conexion.query("SELECT rol FROM usuarios WHERE email = ?", [email], async (error, results)=>{
             if(error){
               console.log("Error encontrado: "+ error)
