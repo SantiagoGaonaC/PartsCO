@@ -35,15 +35,15 @@
                 <tbody>
                   <% results.forEach((usuarios)=>{ %>
                   <tr>
-                    <td><%= usuarios.id %></td>
+                    <td><%= usuarios.idusuario %></td>
                     <td><%= usuarios.nombre %></td>
                     <td><%= usuarios.apellido %></td>
                     <td><%= usuarios.email %></td>
                     <td><%= usuarios.rol %></td>
                     <td>
-                      <a href="/edit/<%= usuarios.id %>" class="btn btn-outline-info"><i class="fa-solid fa-user-pen"></i></a>
+                      <a href="/edit/<%= usuarios.idusuario %>" class="btn btn-outline-info"><i class="fa-solid fa-user-pen"></i></a>
                       <!-- <a href="/delete/<%= usuarios.id %>" class="btn btn-outline-danger"><i class="fa-solid fa-user-xmark"></i></i></a>      -->
-                      <a onclick="confirmar(<%= usuarios.id %>)" class="btn btn-outline-danger"><i class="fa-solid fa-user-xmark"></i></i></a>   
+                      <a onclick="confirmar(<%= usuarios.idusuario %>)" class="btn btn-outline-danger"><i class="fa-solid fa-user-xmark"></i></i></a>   
                     </td>
                   </tr>
                   <%})%>

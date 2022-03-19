@@ -19,9 +19,9 @@
             <table id="usuarios" class="table table-striped table-bordered text-center table-hover nowrap" style="width:100%">
               <thead>
                 <tr class="table-dark text-white">
-                  <th scope="col"># sesiones</th>
-                  <th scope="col">Fechas</th>
-                  <th scope="col">Usuarios</th>    
+                  <th scope="col">ID por sesiones</th>
+                  <th scope="col">Fechas de sesión</th>
+                  <th scope="col">ID Usuarios</th>    
                 </tr>
               </thead>
               <tbody>
@@ -30,7 +30,6 @@
                   <td><%= sesiones.idsesion %></td>
                   <td><%= sesiones.fecha_sesion %></td>
                   <td><%= sesiones.usuarios_idusuario %></td>
-                  
                 </tr>
                 <%})%>
               </tbody>

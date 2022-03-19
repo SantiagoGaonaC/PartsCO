@@ -1,7 +1,6 @@
 <%- include("./template/head.ejs") %>
     <meta name="description" content="">
     <title>Editar User Admin</title>
-    <link href="css/signin.css" rel="stylesheet">
   </head>
 
   <body class="text-center">
@@ -12,32 +11,81 @@
           <form class="row g-3" id="formLogin" action="/update" method="POST">
             <h1 class="h3 mb-3 fw-normal"><strong>Editar PartsCO</strong></h1>
 
-            <input id="id" name="id" value="<%= usuarios.id %>" hidden>
+            <input id="idusuario" name="idusuario" value="<%= usuarios.idusuario %>" hidden>
 
-            <div class="position-relative">
-              <label for="nombre" class="form-label">Nombre</label>
-              <input type="text" name="nombre" class="form-control" id="nombre" value="<%= usuarios.nombre  %>">
-          </div>
-          
-          <div class="position-relative">
-            <label for="apellido" class="form-label">Apellido</label>
-            <input type="text" name="apellido" class="form-control" id="apellido" value="<%= usuarios.apellido  %>">
-          </div>
-        
-          <div class="position-relative">
-            <label for="email" class="form-label">Email</label>
-            <input type="text" name="email" class="form-control" id="email" value="<%= usuarios.email  %>">
-          </div>
+            <div class="row">
+              <div class="col-md-6 mb-4">
+  
+                <div class="position-relative">
+                  <label for="nombre" class="form-label">Nombre</label>
+                  <input type="text" name="nombre" class="form-control" id="nombre" value="<%= usuarios.nombre  %>">
+              </div>
+  
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="position-relative">
+                  <label for="apellido" class="form-label">Apellido</label>
+                  <input type="text" name="apellido" class="form-control" id="apellido" value="<%= usuarios.apellido  %>">
+                </div>
+              </div>
+            </div>
+  
+            <div class="row">
+              <div class="col-md-6 mb-4">
+  
+                <div class="position-relative">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="text" name="email" class="form-control" id="email" value="<%= usuarios.email  %>">
+                </div>
+  
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="position-relative">
+                  <label for="email" class="form-label">Teléfono</label>
+                  <input type="number" name="telefono" class="form-control" id="telefono" value="<%= usuarios.telefono  %>">
+                </div>
+              </div>
+            </div>
+  
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="position-relative">
+                  <label for="email" class="form-label">Número Documento</label>
+                  <input type="" name="ndocumento" class="form-control" id="ndocumento" value="<%= usuarios.documento %>">
+                </div>
+              </div>
+  
+              <div class="col-md-6 mb-4">
+                <div class="position-relative ">
+                  <label for="rol" class="form-label ">Tipo Documento</label>
+                  <select class="form-select " name="tdocumento" id="tdocumento" tabindex="2">
+                      <option value="cedula">Cédula</option>
+                      <option value="nit">Nit</option>
+                    </select>
+                </div>
+              </div>
+            </div>
+  
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="position-relative">
+                  <label for="email" class="form-label">Direccion</label>
+                  <input type="text" name="direccion" class="form-control" id="direccion" value="<%= usuarios.direccion %>">
+                </div>
+              </div>
+  
+              <div class="col-md-6 mb-4">
+                <div class="position-relative">
+                  <label for="rol" class="form-label">Rol</label>
+                  <select class="form-select" name="rol" id="rol" tabindex="3">
+                      <option <%= usuarios.rol=='usuario' ? "selected" : '' %> value="usuario">Usuario</option>
+                      <option <%= usuarios.rol=='empleado' ? "selected" : '' %> value="empleado">Empleado</option>
+                      <option <%= usuarios.rol=='admin' ? "selected" : '' %> value="admin">Admin</option>
+                    </select>
+                </div>
+              </div>
+            </div>
 
-          <div class="position-relative">
-            <label for="rol" class="form-label">Rol</label>
-            <select class="form-select" name="rol" id="rol" tabindex="3">
-                <option <%= usuarios.rol=='usuario' ? "selected" : '' %> value="usuario">Usuario</option>
-                <option <%= usuarios.rol=='empleado' ? "selected" : '' %> value="empleado">Empleado</option>
-                <option <%= usuarios.rol=='admin' ? "selected" : '' %> value="admin">Admin</option>
-              </select>
-          </div>
-        
           <div class="col-12">
             <button class="w-100 btn btn-primary fw-bold" type="submit">Enviar</button>
           </div>

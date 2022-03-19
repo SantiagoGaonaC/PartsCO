@@ -28,7 +28,7 @@ exports.register = async (req,res)=>{
         const tdocumento = req.body.tdocumento
         const documento = tdocumento + ' ' +ndocumento
         
-        if(!nombre || !apellido || !email || !password || !direccion || !telefono){ //si no ingresó nada se indica que ingrese algo
+        if(!nombre || !apellido || !email || !password || !direccion || !telefono || !ndocumento){ //si no ingresó nada se indica que ingrese algo
             res.render('register',NotifySweetAlert.NadaRegisterUser())
         }
           else if(nombre.length>20 || apellido.length>20 || password.length>30){
@@ -73,6 +73,12 @@ exports.registerAdmin = async (req,res)=>{
         const email = req.body.email
         const password = req.body.password
         const rol = req.body.rol
+        const telefono = req.body.telefono
+        const direccion = req.body.direccion
+
+        const ndocumento = req.body.ndocumento
+        const tdocumento = req.body.tdocumento
+        const documento = tdocumento + ' ' +ndocumento
 
         if(!nombre || !apellido || !email || !password){ //si no ingresó nada se indica que ingrese algo
             res.render('create',NotifySweetAlert.NadaregisterAdmin())
@@ -86,7 +92,7 @@ exports.registerAdmin = async (req,res)=>{
         else{
           //hash de la pass
           let passHash = await bcryptjs.hash(password, 8)
-          conexion.query('INSERT INTO usuarios SET ?', {nombre:nombre, apellido:apellido, email:email, password:passHash, rol:rol}, (error, results)=>{
+          conexion.query('INSERT INTO usuarios SET ?', {nombre:nombre, apellido:apellido, email:email, password:passHash, rol:rol, telefono:telefono, direccion:direccion, documento:documento}, (error, results)=>{
             if(error)
             {
               if(error.code == 'ER_DUP_ENTRY' || error.errno == 1062)
@@ -277,7 +283,7 @@ exports.Authenticated = async (req, res, next)=>{
     if (req.cookies.jwt) {
         try {
             const decodificada = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO)
-            conexion.query('SELECT * FROM usuarios WHERE id = ?', [decodificada.id], (error, results)=>{
+            conexion.query('SELECT * FROM usuarios WHERE idusuario = ?', [decodificada.id], (error, results)=>{
                 if(!results){return next()}
                 req.user = results[0]
                 return next()
@@ -298,7 +304,7 @@ exports.AuthenticatedAdmin = async (req, res, next)=>{
         try {
             const decodificada = await promisify(jwtAdmin.verify)(req.cookies.jwtAdmin, process.env.JWT_ADMIN)
             console.log("Aver1 "+process.env.JWT_ADMIN)
-            conexion.query('SELECT * FROM usuarios WHERE id = ?', [decodificada.id], (error, results)=>{
+            conexion.query('SELECT * FROM usuarios WHERE idusuario = ?', [decodificada.id], (error, results)=>{
                 if(!results){return next()}
                 req.user = results[0]
                 return next()

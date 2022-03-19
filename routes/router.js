@@ -33,7 +33,7 @@ router.get('/create', authController.AuthenticatedAdmin, (req,res)=>{
 //RUTA EDITAR USUARIO
 router.get('/edit/:id', authController.AuthenticatedAdmin, (req,res)=>{    
     const id = req.params.id;
-    conexion.query('SELECT * FROM usuarios WHERE id=?',[id] , (error, results) => {
+    conexion.query('SELECT * FROM usuarios WHERE idusuario = ?',[id] , (error, results) => {
         if (error) {
             throw error;
         }else{            
@@ -45,7 +45,7 @@ router.get('/edit/:id', authController.AuthenticatedAdmin, (req,res)=>{
 //RUTA ELIMINAR USUARIO
 router.get('/delete/:id', authController.AuthenticatedAdmin, (req, res) => {
     const id = req.params.id;
-    conexion.query('DELETE FROM usuarios WHERE id = ?',[id], (error, results)=>{
+    conexion.query('DELETE FROM usuarios WHERE idusuario = ?',[id], (error, results)=>{
         if(error){
             console.log(error);
         }else{           
