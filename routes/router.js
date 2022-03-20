@@ -8,8 +8,16 @@ const crud = require('../controllers/crud')
 
 //router para vistas
 router.get('/', authController.Authenticated, (req,res)=>{
-    res.render('index')
+    
+    conexion.query('SELECT * FROM articulos', (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('index', {results:results, usuarios:req.usuarios});
+        }
+    });
 })
+
 router.get('/login', (req,res)=>{
     res.render('login', {alert:false})
 })
@@ -77,6 +85,35 @@ router.get('/parcial/nav.ejs', authController.AuthenticatedAdmin, (req,res)=>{
 router.get('/parcial/logout', authController.AuthenticatedAdmin, (req,res)=>{
     res.render('/parcial/logout')
 })
+
+
+//SOLICITAR ARTICULO
+router.get('/solicitar/:id', authController.Authenticated, (req, res) => {
+    const id = req.params.id;
+
+    let info_usuario = req.usuarios
+    id_usuario = Object.values(info_usuario)[0]
+
+    let query_1 = `INSERT INTO solicitudes(fecha_hora,valor_total,usuarios_idusuario,articulos_idarticulo) VALUES (NOW(),?*1.19,?,?);`;
+    let query_2 = `SELECT valor FROM articulos where idarticulo=?`;
+
+    conexion.query(query_2,[id], (error, results)=>{
+        if(error){
+            console.log(error);
+        }else{      
+            const json = JSON.parse(JSON.stringify(results[0]));
+            const valor = json[Object.keys(json)];         
+            conexion.query(query_1,[valor,id_usuario,id], (error, results)=>{
+                if(error){
+                    console.log(error);
+                }else{      
+                    res.redirect('/');         
+                }
+            })    
+        }
+    })
+});
+
 
 //router para metodos de controller
 router.post('/register', authController.register)

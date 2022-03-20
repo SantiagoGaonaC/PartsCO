@@ -1,5 +1,6 @@
 const express = require('express'); /*Invocamos a express*/
 const app = express();
+const passport = require('passport');
 
 /*Set de urlencoded para datos del formulario*/
 /*datos que enviamos desde forms*/
@@ -38,7 +39,6 @@ app.use(session({ //especificamos el uso de sesiones
 //Invocar modulo de conexión de la Base de datos
 const connection = require('./database/db');
 
-
 //llaamr al router
 app.use('/', require('./routes/router.js'))
 
@@ -67,7 +67,6 @@ app.use('/static', express.static(__dirname + '/public/css'));
 app.use(express.static(__dirname + '/public/img'));
 app.use('/public/img', express.static(__dirname + '/public/img'));
 app.use('/static', express.static(__dirname + '/public/img'));
-
 
 
 const host = '0.0.0.0';

@@ -12,6 +12,7 @@ la funcion nos va a devolver*/
 const {promisify} = require('util')
 const NotifySweetAlert = require('../models/NotifySweetAlert')
 const connection = require('../database/db')
+const { Console } = require('console')
 //metodo para registrarnos
 exports.register = async (req,res)=>{
   email_ex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -249,22 +250,21 @@ exports.login = async(req,res)=>{
                           //conexion.query('UPDATE sesiones SET fecha_sesion=NOW() WHERE usuarios_idusuario = ?', [id]);
                           conexion.query('INSERT INTO sesiones (usuarios_idusuario, fecha_sesion) VALUES (?, NOW())', [id]);
 
+                          // const id = results[0].id
+                          const token = jwt.sign({id:id}, process.env.JWT_SECRETO,{
+                              expiresIn: process.env.JWT_TIEMPO_EXPIRA
+                          })
+                          console.log(token)
+                          //config de cookies
+                          const opcionesCookies = {
+                              expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+                              httpOnly: true
+                          }
+                          res.cookie('jwt', token, opcionesCookies) //nombre de la cookie
+                          res.render('login',NotifySweetAlert.UserLoginUp())
+                          
                       });
-                      
-                        //conexion.query('UPDATE sesiones SET fecha_sesion=NOW() WHERE email = ?', [email]);
-                        //conexion.query('UPDATE usuarios SET sesion=NOW()  WHERE email = ?', [email]);
-                        const id = results[0].id
-                        const token = jwt.sign({id:id}, process.env.JWT_SECRETO,{
-                            expiresIn: process.env.JWT_TIEMPO_EXPIRA
-                        })
-                        console.log(token)
-                        //config de cookies
-                        const opcionesCookies = {
-                            expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
-                            httpOnly: true
-                        }
-                        res.cookie('jwt', token, opcionesCookies) //nombre de la cookie
-                        res.render('login',NotifySweetAlert.UserLoginUp())
+                
                     }
                   }) //se busca el usuario en la tabla
                 }
@@ -284,9 +284,9 @@ exports.Authenticated = async (req, res, next)=>{
         try {
             const decodificada = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO)
             conexion.query('SELECT * FROM usuarios WHERE idusuario = ?', [decodificada.id], (error, results)=>{
-                if(!results){return next()}
-                req.user = results[0]
-                return next()
+              if(!results){return next()}
+              req.usuarios = results[0]
+                return next()              
             })
         } catch (error) {
             console.log(error)
@@ -306,7 +306,7 @@ exports.AuthenticatedAdmin = async (req, res, next)=>{
             console.log("Aver1 "+process.env.JWT_ADMIN)
             conexion.query('SELECT * FROM usuarios WHERE idusuario = ?', [decodificada.id], (error, results)=>{
                 if(!results){return next()}
-                req.user = results[0]
+                req.usuarios = results[0]
                 return next()
             })
         } catch (error) {
