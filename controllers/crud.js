@@ -26,3 +26,43 @@ exports.update = (req, res)=>{
         }
 });
 };
+
+
+exports.actualizarproductos = (req, res)=>{
+
+    const idarticulo = req.body.idarticulo
+    const nombre = req.body.nombre
+    const stock = req.body.stock
+    const valor = req.body.valor
+    const estado = req.body.estado
+    const descripcion = req.body.descripcion
+    const categoria = req.body.categoria
+
+
+    conexion.query('UPDATE articulos SET ? WHERE idarticulo = ?',[{nombre:nombre, stock:stock, valor:valor, estado:estado,descripcion:descripcion, categoria:categoria}, idarticulo], (error, results)=>{
+        if(error){
+            console.log(error);
+        }else{           
+            res.redirect('/productos');         
+        }
+    });
+};
+
+
+exports.crearpartes = (req, res)=>{
+    const nombre = req.body.nombre
+    const stock = req.body.stock
+    const valor = req.body.valor
+    const estado = req.body.estado
+    const descripcion = req.body.descripcion
+    const categoria = req.body.categoria
+
+    conexion.query('INSERT INTO articulos SET ?',[{nombre:nombre, stock:stock, valor:valor, estado:estado, descripcion:descripcion, categoria:categoria}], (error, results)=>{
+        if(error){
+            console.log(error);
+        }else{           
+            res.redirect('/productos');         
+        }
+    });
+
+}

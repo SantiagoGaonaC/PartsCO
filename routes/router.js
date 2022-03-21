@@ -87,6 +87,7 @@ router.get('/parcial/logout', authController.AuthenticatedAdmin, (req,res)=>{
 })
 
 
+
 //SOLICITAR ARTICULO
 router.get('/solicitar/:id', authController.Authenticated, (req, res) => {
     const id = req.params.id;
@@ -114,13 +115,58 @@ router.get('/solicitar/:id', authController.Authenticated, (req, res) => {
     })
 });
 
+//INFORMACIÓN DE PRODUCTOS - ADMIN
+router.get('/productos', authController.AuthenticatedAdmin, (req,res)=>{
+    
+    conexion.query('SELECT * FROM articulos', (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('productos.ejs', {results:results, usuarios:req.usuarios});
+        }
+    });
+})
+
+
+//RUTA ELIMINAR PRODUCTO
+router.get('/eliminar/:id', authController.AuthenticatedAdmin, (req, res) => {
+    const id = req.params.id;
+    conexion.query('DELETE FROM articulos WHERE idarticulo = ?',[id], (error, results)=>{
+        if(error){
+            console.log(error);
+        }else{           
+            res.redirect('productos.ejs');         
+        }
+    })
+});
+
+router.get('/editar/:id', authController.AuthenticatedAdmin, (req,res)=>{    
+    const id = req.params.id;
+    conexion.query('SELECT * FROM articulos WHERE idarticulo = ?',[id] , (error, results) => {
+        if (error) {
+            throw error;
+        }else{            
+            res.render('editar.ejs', {articulos:results[0],alert:false});            
+        }        
+    });
+});
+
+
+router.get('/crear-parte', authController.AuthenticatedAdmin, (req,res)=>{
+    res.render('crear-parte.ejs', {alert:false})
+})
+
 
 //router para metodos de controller
 router.post('/register', authController.register)
 router.post('/login', authController.login)
 router.post('/create', authController.registerAdmin)
 router.post('/update', crud.update)
+
+router.post('/actualizarproductos', crud.actualizarproductos) //actualizarProductos
+router.post('/crearproductos', crud.crearpartes)
 router.get('/logout', authController.logout)
+
 
 
 module.exports = router
