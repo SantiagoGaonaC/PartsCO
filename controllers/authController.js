@@ -28,6 +28,7 @@ exports.register = async (req,res)=>{
         const ndocumento = req.body.ndocumento
         const tdocumento = req.body.tdocumento
         const documento = tdocumento + ' ' +ndocumento
+        const estado = "Activo"
         
         if(!nombre || !apellido || !email || !password || !direccion || !telefono || !ndocumento){ //si no ingresó nada se indica que ingrese algo
             res.render('register',NotifySweetAlert.NadaRegisterUser())
@@ -41,7 +42,7 @@ exports.register = async (req,res)=>{
         else{
           //hash de la pass
           let passHash = await bcryptjs.hash(password, 8)
-          conexion.query('INSERT INTO usuarios SET ?', {nombre:nombre, apellido:apellido, email:email, password:passHash, rol:usuario, direccion:direccion, telefono:telefono, documento:documento}, (error, results)=>{
+          conexion.query('INSERT INTO usuarios SET ?', {nombre:nombre, apellido:apellido, email:email, password:passHash, rol:usuario, direccion:direccion, telefono:telefono, documento:documento, estado:estado}, (error, results)=>{
             if(error)
             {
               if(error.code == 'ER_DUP_ENTRY' || error.errno == 1062)
@@ -80,6 +81,7 @@ exports.registerAdmin = async (req,res)=>{
         const ndocumento = req.body.ndocumento
         const tdocumento = req.body.tdocumento
         const documento = tdocumento + ' ' +ndocumento
+        const estado = "Activo"
 
         if(!nombre || !apellido || !email || !password){ //si no ingresó nada se indica que ingrese algo
             res.render('create',NotifySweetAlert.NadaregisterAdmin())
@@ -93,7 +95,7 @@ exports.registerAdmin = async (req,res)=>{
         else{
           //hash de la pass
           let passHash = await bcryptjs.hash(password, 8)
-          conexion.query('INSERT INTO usuarios SET ?', {nombre:nombre, apellido:apellido, email:email, password:passHash, rol:rol, telefono:telefono, direccion:direccion, documento:documento}, (error, results)=>{
+          conexion.query('INSERT INTO usuarios SET ?', {nombre:nombre, apellido:apellido, email:email, password:passHash, rol:rol, telefono:telefono, direccion:direccion, documento:documento, estado:estado}, (error, results)=>{
             if(error)
             {
               if(error.code == 'ER_DUP_ENTRY' || error.errno == 1062)

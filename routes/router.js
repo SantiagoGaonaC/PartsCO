@@ -53,11 +53,36 @@ router.get('/edit/:id', authController.AuthenticatedAdmin, (req,res)=>{
 //RUTA ELIMINAR USUARIO
 router.get('/delete/:id', authController.AuthenticatedAdmin, (req, res) => {
     const id = req.params.id;
-    conexion.query('DELETE FROM usuarios WHERE idusuario = ?',[id], (error, results)=>{
+    const estado = 'No Activo'
+    const query_estado = 'SELECT estado from usuarios where idusuario = ?'
+    query_id_estado = 'UPDATE usuarios SET estado = ? WHERE idusuario = ?'
+
+    conexion.query(query_estado,[id], (error, results)=>{
         if(error){
             console.log(error);
-        }else{           
-            res.redirect('/admin');         
+        }else{      
+            const json = JSON.parse(JSON.stringify(results[0]));
+            const estado = json[Object.keys(json)];
+            if (estado=='Inactivo'){
+                const estado_activo = 'Activo';
+                conexion.query(query_id_estado,[estado_activo,id], (error, results)=>{
+                    if(error){
+                        console.log(error);
+                    }else{      
+                        res.redirect('/admin');   
+                    }
+                })
+                
+            }else{
+                const estado_Inactivo = 'Inactivo';
+                conexion.query(query_id_estado,[estado_Inactivo,id], (error, results)=>{
+                    if(error){          
+                        console.log(error);
+                    }else{      
+                        res.redirect('/admin');         
+                    }
+                })
+            }  
         }
     })
 });
