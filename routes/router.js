@@ -174,12 +174,33 @@ router.get('/solicitudes', authController.AuthenticatedAdmin, (req,res)=>{
 //HACER UN IF- SI ESTÁ TERMINADA PONER NO TERMINADA - SI ESTÁ NO TERMINADA PONER TERMINADA
 router.get('/terminar-solicitud/:id', authController.AuthenticatedAdmin, (req, res) => {
     const id = req.params.id;
-    const terminada = 'Terminada'
-    conexion.query('UPDATE solicitudes SET estado_solicitud=? WHERE idsolicitud = ?',[terminada,id], (error, results)=>{
+    const query1 = 'select estado_solicitud from solicitudes where idsolicitud = ?'
+
+    conexion.query(query1,[id], (error, results)=>{
         if(error){
             console.log(error);
-        }else{           
-            res.redirect('/solicitudes');         
+        }else{      
+            const json = JSON.parse(JSON.stringify(results[0]));
+            const estado = json[Object.keys(json)];
+            if (estado=='No Terminada'){
+                const terminada = 'Terminada';
+                conexion.query('UPDATE solicitudes SET estado_solicitud= ? WHERE idsolicitud = ?',[terminada,id], (error, results)=>{
+                    if(error){
+                        console.log(error);
+                    }else{      
+                        res.redirect('/solicitudes');   
+                    }
+                })
+            }else{
+                const noTerminada = 'No Terminada';
+                conexion.query('UPDATE solicitudes SET estado_solicitud= ? WHERE idsolicitud = ?',[noTerminada,id], (error, results)=>{
+                    if(error){          
+                        console.log(error);
+                    }else{      
+                        res.redirect('/solicitudes');         
+                    }
+                })
+            }  
         }
     })
 });
