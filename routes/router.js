@@ -253,6 +253,48 @@ router.get('/descuentos', authController.Authenticated, (req,res)=>{
 })
 
 
+router.get('/descuentos-admin', authController.AuthenticatedAdmin, (req,res)=>{
+
+    conexion.query('SELECT * FROM descuentos', (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('descuentos-admin.ejs', {results:results,usuarios:req.usuarios});
+        }
+    });
+})
+
+router.get('/editar-descuento/:id', authController.AuthenticatedAdmin, (req,res)=>{    
+    const id = req.params.id;
+    conexion.query('SELECT * FROM descuentos WHERE iddescuentos = ?',[id] , (error, results) => {
+        if (error) {
+            throw error;
+        }else{            
+            res.render('editar-descuento.ejs', {descuentos:results[0],alert:false});            
+        }        
+    });
+});
+
+
+router.get('/borrar-descuento/:id', authController.AuthenticatedAdmin, (req, res) => {
+    const id = req.params.id;
+    conexion.query('DELETE FROM descuentos WHERE iddescuentos = ?',[id], (error, results)=>{
+        if(error){
+            console.log(error);
+        }else{           
+            res.redirect('/descuentos-admin');         
+        }
+    })
+});
+
+//CREAR DESCUENTO
+router.get('/crear-descuento', authController.AuthenticatedAdmin, (req,res)=>{
+    res.render('crear-descuento.ejs', {alert:false})
+})
+
+
+
+
 
 
 //router para metodos de controller
@@ -260,10 +302,13 @@ router.post('/register', authController.register)
 router.post('/login', authController.login)
 router.post('/create', authController.registerAdmin)
 router.post('/update', crud.update)
+router.post('/descuentosA', crud.descuentosA)
 
 router.post('/actualizarproductos', crud.actualizarproductos) //actualizarProductos
 router.post('/crearproductos', crud.crearpartes)
+router.post('/crear-descuentos', crud.crearDescuento)
 router.get('/logout', authController.logout)
+
 
 
 module.exports = router

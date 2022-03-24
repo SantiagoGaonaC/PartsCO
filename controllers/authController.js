@@ -142,7 +142,7 @@ exports.login = async(req,res)=>{
                 var row = results[key];
                 console.log(row.rol)
                 if (row.rol == 'admin'){
-                  console.log("admin")
+                  
                   if(!email || !password){ //si no ingresó nada se indica que ingrese algo
                     res.render('login',NotifySweetAlert.NoEmailNoPassword())
                 }else{
@@ -185,7 +185,7 @@ exports.login = async(req,res)=>{
                     })
                 }
                 }else if (row.rol == 'empleado'){
-                  console.log("empleado")
+                  
                   if(!email || !password){ //si no ingresó nada se indica que ingrese algo
                     res.render('login',NotifySweetAlert.NoEmailNoPassword())
                 }else{
@@ -229,7 +229,7 @@ exports.login = async(req,res)=>{
                     })
                 }
                 }else if (row.rol == 'usuario'){
-                  console.log("usuario")
+                  
                   if(!email || !password){ //si no ingresó nada se indica que ingrese algo
                     res.render('login',NotifySweetAlert.NoEmailNoPassword())
                 }else{
@@ -307,7 +307,7 @@ exports.AuthenticatedAdmin = async (req, res, next)=>{
     if (req.cookies.jwtAdmin) {
         try {
             const decodificada = await promisify(jwtAdmin.verify)(req.cookies.jwtAdmin, process.env.JWT_ADMIN)
-            console.log("Aver1 "+process.env.JWT_ADMIN)
+            
             conexion.query('SELECT * FROM usuarios WHERE idusuario = ?', [decodificada.id], (error, results)=>{
                 if(!results){return next()}
                 req.usuarios = results[0]

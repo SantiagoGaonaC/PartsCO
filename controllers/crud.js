@@ -64,5 +64,35 @@ exports.crearpartes = (req, res)=>{
             res.redirect('/productos');         
         }
     });
+}
 
+exports.descuentosA = (req, res)=>{
+    const iddescuentos = req.body.iddescuentos;
+    const titulo = req.body.titulo
+    const estado = req.body.estado
+    const descripcion = req.body.descripcion
+
+    conexion.query('UPDATE descuentos SET ? WHERE iddescuentos = ?',[{titulo:titulo, estado:estado, descripcion:descripcion}, iddescuentos], (error, results)=>{
+        if(error){
+            console.log(error);
+        }else{           
+            res.redirect('/descuentos-admin');         
+        }
+});
+};
+
+
+exports.crearDescuento = (req, res)=>{
+    const titulo = req.body.titulo
+    const estado = req.body.estado
+    const descripcion = req.body.descripcion
+
+
+    conexion.query('INSERT INTO descuentos SET ?',[{titulo:titulo, estado:estado, descripcion:descripcion}], (error, results)=>{
+        if(error){
+            console.log(error);
+        }else{           
+            res.redirect('/descuentos-admin');         
+        }
+    });
 }

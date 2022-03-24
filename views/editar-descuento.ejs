@@ -1,0 +1,72 @@
+<%- include("./template/head.ejs") %>
+    <title>Descuento Admin PartsCO</title>
+    <meta name="description" content="">
+  </head>
+
+  <body>
+    <header>
+      <section class="container">
+        <%- include("./template/nav.ejs") %>
+      </section>
+
+      <body class="text-center">
+        <% if (descuentos) { %>
+        <div>
+          <div class="position-absolute top-50 start-50 translate-middle">
+            <main class="form-signin text-center shadow-lg p-2 mb-5">
+              <form class="row g-3" id="formLogin" action="/descuentosA" method="POST">
+                <h1 class="h3 mb-3 fw-normal"><strong>Editar Descuento</strong></h1>
+                <input id="iddescuentos" name="iddescuentos" value="<%= descuentos.iddescuentos %>" hidden>
+    
+                <div class="row">
+                  <div class="col-md-6 mb-4">
+      
+                    <div class="position-relative">
+                      <label for="nombre" class="form-label">Título Descuento</label>
+                      <input type="text" name="titulo" class="form-control" id="titulo" value="<%= descuentos.titulo  %>">
+                  </div>
+      
+                  </div>
+                  <div class="col-md-6 mb-4">
+                    <div class="position-relative">
+                      <label for="rol" class="form-label">Estado del descuento</label>
+                      <select class="form-select" name="estado" id="estado" tabindex="3">
+                          <option <%= descuentos.estado=='0' ? "selected" : '' %> value="0">Inactivo</option>
+                          <option <%= descuentos.estado=='1' ? "selected" : '' %> value="1">Activo</option>
+                        </select></div>
+                  </div>
+                </div>
+      
+                <div class="position-relative">
+                    <label for="apellido" class="form-label">Descripción</label>
+                      <input type="text" name="descripcion" class="form-control" id="descripcion" value="<%= descuentos.descripcion  %>">
+                    </div>
+    
+              <div class="col-12">
+                <button class="w-100 btn btn-primary fw-bold" type="submit">Enviar</button>
+              </div>
+              </form>
+                <br>
+                <a href="/descuentos-admin" type="button" class="w-100 btn btn-primary fw-bold">Atrás</a>
+                <br>
+                <p class="mt-1 mb-3 text-muted">&copy;Proyecto integrador PartsCO 2022-1</p>
+            </main>
+          </div>
+        
+        </div>
+        <% } %>
+        <% if(alert){ %>
+          <script>
+            Swal.fire({
+              title: '<%=alertTitle%>',
+              text: '<%=alertMessage%>',
+              icon: '<%=alertIcon%>',
+              showConfirmButton: <%=showConfirmButton%>,
+              timer: <%=timer%>
+            }).then(()=>{
+              window.location = '/<%=ruta%>'
+            })
+          </script>
+        <% } %>
+    
+      </body>

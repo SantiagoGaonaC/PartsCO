@@ -1,0 +1,97 @@
+<%- include("./template/head.ejs") %>
+    <title>Admin PartsCO</title>
+    <meta name="description" content="">
+  </head>
+
+  <body>
+    <header>
+      <section class="container">
+        <%- include("./template/nav.ejs") %>
+      </section>
+      <section class="container">
+        <section class="container position-absolute top-50 start-50 translate-middle">
+          <h1 class="text-center">Gestión de descuentos</h1>
+          
+          <div class="container shadow">
+            <div class="container mb-2">
+              <a href="/crear-descuento" id="create" name="create" class="btn btn-outline-dark mt-4"><i class="fa-solid fa-user-plus"></i> Añadir Descuento</a>
+            </div>
+            <section>
+              <div class="container shadow-lg mb-5">
+                
+                <table id="usuarios" class="table table-striped table-bordered text-center table-hover nowrap" style="width:100%">
+                  <thead>
+                    <tr class="table-dark text-white">
+                      <th scope="col">ID de descuentos</th>
+                      <th scope="col">Estado</th>
+                      <th scope="col">Descripción</th>    
+                      <th scope="col">Título</th>
+                      <th scope="col">Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% results.forEach((descuentos)=>{ %>
+                    <tr>
+                      <td><%= descuentos.iddescuentos %></td>
+                      <td><%= descuentos.estado %></td>
+                      <td><%= descuentos.descripcion %></td>
+                      <td><%= descuentos.titulo %></td>
+                      <td>
+                        <a href="/editar-descuento/<%= descuentos.iddescuentos %>" class="btn btn-outline-info"><i class="fa-solid fa-user-pen"></i> Editar</a>
+                        <a onclick="confirmar(<%= descuentos.iddescuentos %>)" class="btn btn-outline-danger"><i class="fa-solid fa-user-xmark"></i></i></a>
+                      </td>
+                    </tr>
+                    <%})%>
+                  </tbody>
+                </table>
+        
+              </div>
+            </section>
+        
+          </div>
+        </section>
+        
+        
+        <script>
+          $(document).ready(function() {
+            $('#usuarios').DataTable({
+              "responsive": true,
+              "language": {
+                    "lengthMenu": "Mostrar _MENU_ registros",
+                    "zeroRecords": "No se encontraron resultados",
+                    "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sSearch": "Buscar:",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast":"Último",
+                        "sNext":"Siguiente",
+                        "sPrevious": "Anterior"
+               },
+               "sProcessing":"Procesando...",
+                }
+            });
+          });
+
+          function confirmar(id){
+        Swal.fire({
+          title: '¿Confirma eliminar el descuento: '+id+'?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: 'Confirmar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location = '/borrar-descuento/'+id;
+        }
+      })
+      }
+        
+        </script>
+
+      </section>
+    </header>
+  </body>
+</html>
