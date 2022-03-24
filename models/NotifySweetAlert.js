@@ -153,6 +153,18 @@ class NotifySweetAlert {
       ruta: 'create'
     }
   }
+  RegistroExitoso(){
+    return {
+      alert:true,
+      alertTitle: "Registo exitoso",
+      alertMessage: "La cuenta ha sido registra correctamente",
+      alertIcon: 'success',
+      showConfirmButton: false,
+      timer: 1200,
+      ruta: 'login'
+    }
+  }
+  
 
 }
 

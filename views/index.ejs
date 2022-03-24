@@ -7,7 +7,6 @@
 
 <body>
   <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-
     <section>
       <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-black">
         <div class="container">
@@ -19,13 +18,10 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/index">Principal</a>
+                <a class="nav-link active" aria-current="page" href="/">Productos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Usuario</a>
+                <a class="nav-link" href="/descuentos">Descuentos</a>
               </li>
               <li class="nav-item">
                 <% if (usuarios) { %>
@@ -40,7 +36,6 @@
             </ul>
             <form class="d-flex nav-item">
               <a href="logout" type="button" class="btn btn-primary">logout</a>
-              
             </form>
           </div>
         </div>
@@ -81,17 +76,12 @@
             <%})%>
           </tbody>
         </table>
-
       </div>
     </section>
-
   </div>
 </section>
 
-
 <script>
-
-
 $(document).ready(function () {
     // Setup - add a text input to each footer cell
     $('#usuarios thead tr')
@@ -167,9 +157,6 @@ $(document).ready(function () {
     });
 });
   
-
-
-
   function confirmar(id){
     Swal.fire({
       title: '¿Confirma la solicitud del producto con id: '+id+'?',
@@ -185,7 +172,7 @@ $(document).ready(function () {
   })
   }
 </script>
-    
+
 </body>
 </html>
 

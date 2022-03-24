@@ -1,0 +1,77 @@
+<%- include("./template/head.ejs") %>
+  <title>Panel PartsCO</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/theadinput.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <section>
+          <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-black">
+            <div class="container">
+              <img src="/public/img/logo/partsCo.svg" class="navbar-brand img-responsive logo" style="width: 5%" title="LogoPartsCO" alt="LogoPartsCO">
+              <!-- <a class="navbar-brand logo-text" href="#">Santiago</a> -->
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link " aria-current="page" href="/">Productos</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" href="/descuentos">Descuentos</a>
+                  </li>
+                  <li class="nav-item">
+                    <% if (usuarios) { %>
+                    <span class="nav-link text-white" href="#">Nombre: <%= usuarios.nombre %></span>
+                    <% } %>
+                  </li>
+                  <li class="nav-item">
+                    <% if (usuarios) { %>
+                    <span class="nav-link text-white" href="#">ID: <%= usuarios.idusuario %></span>
+                    <% } %>
+                  </li>
+                </ul>
+                <form class="d-flex nav-item">
+                  <a href="logout" type="button" class="btn btn-primary">logout</a>
+                </form>
+              </div>
+            </div>
+          </nav>
+        </section>
+      </header>
+
+
+
+      <section class="pb-10 h-100 ">
+          <div class="container">
+            <h1 style="text-align: center;" class="col-12">Descuentos disponibles</h1>
+          </div>
+
+          <div class="container">
+            <% results.forEach((descuentos)=>{ %>
+              <div class="row g-3 pt-3">
+                <div class="col-12 col-md-6 col-lg-4 mx-auto d-flex justify-content-center align-items-center">
+                  <div class="card border-primary shadow" style="width: 50rem;">
+                    <div class="card-header">
+                      <h5 class="card-title text-center"><%= descuentos.titulo %></h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">
+                        <blockquote class="blockquote mb-0">
+                          <p><%= descuentos.descripcion %></p>
+                          <footer class="blockquote-footer">?? <cite title="Source Title">??</cite></footer>
+                        </blockquote>
+                      </li>
+
+                    </ul>
+                  </div>
+                </div>
+              </div>            
+              <%})%>       
+          </div>
+      </section>
+</body>
+</html>

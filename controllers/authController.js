@@ -56,8 +56,10 @@ exports.register = async (req,res)=>{
                 res.redirect('/')
               }
             }else{
+
               console.log('Usuario registrado')
-              res.redirect('/')
+              //res.redirect('/',NotifySweetAlert.RegistroExitoso())
+              res.render('register',NotifySweetAlert.RegistroExitoso())
             }
       })
         }

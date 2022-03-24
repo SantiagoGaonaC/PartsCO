@@ -13,7 +13,8 @@ router.get('/', authController.Authenticated, (req,res)=>{
         if(error){
             throw error;
         }else{
-            res.render('index', {results:results, usuarios:req.usuarios});
+            
+            res.render('index', {results:results, usuarios:req.usuarios, alert:true});
         }
     });
 })
@@ -53,10 +54,8 @@ router.get('/edit/:id', authController.AuthenticatedAdmin, (req,res)=>{
 //RUTA ELIMINAR USUARIO
 router.get('/delete/:id', authController.AuthenticatedAdmin, (req, res) => {
     const id = req.params.id;
-    const estado = 'No Activo'
     const query_estado = 'SELECT estado from usuarios where idusuario = ?'
     query_id_estado = 'UPDATE usuarios SET estado = ? WHERE idusuario = ?'
-
     conexion.query(query_estado,[id], (error, results)=>{
         if(error){
             console.log(error);
@@ -110,8 +109,6 @@ router.get('/parcial/nav.ejs', authController.AuthenticatedAdmin, (req,res)=>{
 router.get('/parcial/logout', authController.AuthenticatedAdmin, (req,res)=>{
     res.render('/parcial/logout')
 })
-
-
 
 //SOLICITAR ARTICULO
 router.get('/solicitar/:id', authController.Authenticated, (req, res) => {
@@ -241,6 +238,21 @@ router.get('/eliminar-solicitud/:id', authController.AuthenticatedAdmin, (req, r
         }
     })
 });
+
+
+//RUTA DESCUENTOS USUARIOS
+router.get('/descuentos', authController.Authenticated, (req,res)=>{
+
+    conexion.query('SELECT estado,descripcion,titulo FROM descuentos WHERE estado = 1', (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('descuentos.ejs', {results:results,usuarios:req.usuarios});
+        }
+    });
+})
+
+
 
 
 //router para metodos de controller
