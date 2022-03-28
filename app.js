@@ -17,6 +17,8 @@ const cookieParser = require('cookie-parser')
 app.use(cookieParser())
 
 /*Set y configuración del directorio public*/
+app.set('views', path.join(__dirname, '/views'));
+
 app.use('/resources', express.static('public'));
 app.use('/resources', express.static(__dirname + '/public'));
 
@@ -69,14 +71,10 @@ app.use(express.static(__dirname + '/public/img'));
 app.use('/public/img', express.static(__dirname + '/public/img'));
 app.use('/static', express.static(__dirname + '/public/img'));
 
-
-
-
-
 const host = '0.0.0.0';
 const port = process.env.PORT || 3000;
 
 app.listen(port, host, function() {
-    console.log("Server started.......");
+    console.log("Servidor iniciado PartsCO...");
   });
 

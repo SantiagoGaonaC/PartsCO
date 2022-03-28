@@ -12,10 +12,10 @@ const connection = mysql.createConnection({
 
 connection.connect((error)=>{
     if(error){
-        console.log('Error de conexión es: ' +error);
+        console.log('Error de conexión BD es: ' +error);
         return; 
     }
-    console.log("Conexión exitosa");
+    console.log("Conexión DataBase exitosa");
 }); //saber si la conexión está OK y si hay error que lo muestre
 
 setInterval(function () {

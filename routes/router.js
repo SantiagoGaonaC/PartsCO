@@ -293,6 +293,9 @@ router.get('/crear-descuento', authController.AuthenticatedAdmin, (req,res)=>{
 })
 
 
+router.get('/test', authController.AuthenticatedAdmin, (req,res)=>{
+    res.render('empleado/test', {alert:false})
+})
 
 
 

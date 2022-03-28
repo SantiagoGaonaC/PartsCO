@@ -163,7 +163,7 @@ exports.login = async(req,res)=>{
                               const id = rows[Object.keys(rows)];
           
                               // here you can access rows
-                              console.log("ID:",id);
+                             
                               //conexion.query('UPDATE sesiones SET fecha_sesion=NOW() WHERE usuarios_idusuario = ?', [id]);
                               conexion.query('INSERT INTO sesiones (usuarios_idusuario, fecha_sesion) VALUES (?, NOW())', [id]);
                           });
@@ -207,7 +207,7 @@ exports.login = async(req,res)=>{
                               const id = rows[Object.keys(rows)];
           
                               // here you can access rows
-                              console.log("ID:",id);
+                              
                               //conexion.query('UPDATE sesiones SET fecha_sesion=NOW() WHERE usuarios_idusuario = ?', [id]);
                               conexion.query('INSERT INTO sesiones (usuarios_idusuario, fecha_sesion) VALUES (?, NOW())', [id]);
                           });
@@ -258,7 +258,7 @@ exports.login = async(req,res)=>{
                           const token = jwt.sign({id:id}, process.env.JWT_SECRETO,{
                               expiresIn: process.env.JWT_TIEMPO_EXPIRA
                           })
-                          console.log(token)
+                          
                           //config de cookies
                           const opcionesCookies = {
                               expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
