@@ -57,7 +57,7 @@
               <th scope="col">Descripción</th>
               <th scope="col">Estado</th>
               <th scope="col">Precio</th>
-              <th scope="col">Solicitar</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -70,7 +70,7 @@
               <td><%= articulos.estado %></td>
               <td>$<%= articulos.valor %></td>
               <td>
-                <a onclick="confirmar(<%= articulos.idarticulo %>)" class="btn btn-outline-danger"><i class="fa-solid fa-plus"></i></i>SOLICITAR</a>
+                <a onclick="confirmar(<%= articulos.idarticulo %>)" class="btn btn-outline-danger"><i class="fa-solid fa-plus"></i></i> SOLICITAR</a>
               </td>
             </tr>
             <%})%>
