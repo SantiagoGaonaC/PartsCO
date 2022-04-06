@@ -6,15 +6,14 @@ const authController = require('../controllers/authController')
 const conexion = require('../database/db')
 const crud = require('../controllers/crud')
 
-//router para vistas
+//RUTA PRINCIPAL DEL USUARIO / index.js
 router.get('/', authController.Authenticated, (req,res)=>{
     
     conexion.query('SELECT * FROM articulos', (error, results)=>{
         if(error){
             throw error;
         }else{
-            
-            res.render('index', {results:results, usuarios:req.usuarios, alert:true});
+            res.render('usuarios/index', {results:results, usuarios:req.usuarios, alert:true});
         }
     });
 })
@@ -25,28 +24,30 @@ router.get('/login', (req,res)=>{
 router.get('/register', (req,res)=>{
     res.render('register', {alert:false})
 })
+
+//RUTA PARA LA INFORMACION Y GESTIÓN DE USUARIOS
 router.get('/admin', authController.AuthenticatedAdmin, (req,res)=>{
     conexion.query('SELECT * FROM usuarios', (error, results)=>{
         if(error){
             throw error;
         }else{
-            res.render('admin', {results:results});
+            res.render('admin/admin.ejs', {results:results});
         }
     })
 })
-
+//RUTA PARA CREAR USUARIO POR ROL - DENTRO DEL PANEL (INFORMACION Y GESTIÓN DE USUARIOS)
 router.get('/create', authController.AuthenticatedAdmin, (req,res)=>{
-    res.render('create', {alert:false})
+    res.render('admin/create', {alert:false})
 })
 
-//RUTA EDITAR USUARIO
+//RUTA EDITAR USUARIO, SE ENCUENTRA DENTRO DEL PANEL DE (INFORMACION Y GESTIÓN DE USUARIOS) COMO BOTÓN
 router.get('/edit/:id', authController.AuthenticatedAdmin, (req,res)=>{    
     const id = req.params.id;
     conexion.query('SELECT * FROM usuarios WHERE idusuario = ?',[id] , (error, results) => {
         if (error) {
             throw error;
         }else{            
-            res.render('edit.ejs', {usuarios:results[0],alert:false});            
+            res.render('admin/edit.ejs', {usuarios:results[0],alert:false});            
         }        
     });
 });
@@ -86,18 +87,18 @@ router.get('/delete/:id', authController.AuthenticatedAdmin, (req, res) => {
     })
 });
 
-//PANEL PRINCIPAL ADMIN
+//PANEL PRINCIPAL ADMIN DENTRO DE ESTE ESTÁN TODAS LAS RUTAS PARA QUE EL ADMIN SELECCIONE LA QUE QUIERA
 router.get('/panel', authController.AuthenticatedAdmin, (req,res)=>{
-    res.render('panel', {alert:false})
+    res.render('admin/panel', {alert:false})
 })
 
-//Logs USUARIO | Historial
+//Logs USUARIO | Historial | DEBE ESTAR LOGUEADO COMO ROL ADMIN
 router.get('/logs', authController.AuthenticatedAdmin, (req,res)=>{
     conexion.query('SELECT * FROM sesiones', (error, results)=>{
         if(error){
             throw error;
         }else{
-            res.render('logs.ejs', {results:results});
+            res.render('admin/logs.ejs', {results:results});
         }
     });
 })
@@ -137,18 +138,17 @@ router.get('/solicitar/:id', authController.Authenticated, (req, res) => {
     })
 });
 
-//INFORMACIÓN DE PRODUCTOS - ADMIN
+//CRUD DE INFORMACIÓN DE PRODUCTOS | LO PUEDE EDITAR TANTO ADMIN COMO EMPLEADO 
 router.get('/productos', authController.AuthenticatedAdmin, (req,res)=>{
     
     conexion.query('SELECT * FROM articulos', (error, results)=>{
         if(error){
             throw error;
         }else{
-            res.render('productos.ejs', {results:results, usuarios:req.usuarios});
+            res.render('admin/productos.ejs', {results:results, usuarios:req.usuarios});
         }
     });
 })
-
 
 //RUTA ELIMINAR PRODUCTO
 router.get('/eliminar/:id', authController.AuthenticatedAdmin, (req, res) => {
@@ -169,31 +169,29 @@ router.get('/editar/:id', authController.AuthenticatedAdmin, (req,res)=>{
         if (error) {
             throw error;
         }else{            
-            res.render('editar.ejs', {articulos:results[0],alert:false});            
+            res.render('admin/editar.ejs', {articulos:results[0],alert:false});            
         }        
     });
 });
 
 //CREAR PARTE / ARTICULO
 router.get('/crear-parte', authController.AuthenticatedAdmin, (req,res)=>{
-    res.render('crear-parte.ejs', {alert:false})
+    res.render('admin/crear-parte.ejs', {alert:false})
 })
 
-
-//VER SOLICITUDES
+//SOLICITUDES EDITAR Y BORRAR LAS SOLICITUDES DE LOS USUARIOS
 router.get('/solicitudes', authController.AuthenticatedAdmin, (req,res)=>{
     
     conexion.query('SELECT * FROM solicitudes', (error, results)=>{
         if(error){
             throw error;
         }else{
-            res.render('solicitudes.ejs', {results:results});
+            res.render('admin/solicitudes.ejs', {results:results});
         }
     });
 })
 
-
-//HACER UN IF- SI ESTÁ TERMINADA PONER NO TERMINADA - SI ESTÁ NO TERMINADA PONER TERMINADA
+//CAMBIAR ESTADO DE LA SOLICITUD - NO TERMINADA O TERMINADA
 router.get('/terminar-solicitud/:id', authController.AuthenticatedAdmin, (req, res) => {
     const id = req.params.id;
     const query1 = 'select estado_solicitud from solicitudes where idsolicitud = ?'
@@ -239,7 +237,6 @@ router.get('/eliminar-solicitud/:id', authController.AuthenticatedAdmin, (req, r
     })
 });
 
-
 //RUTA DESCUENTOS USUARIOS
 router.get('/descuentos', authController.Authenticated, (req,res)=>{
 
@@ -247,35 +244,35 @@ router.get('/descuentos', authController.Authenticated, (req,res)=>{
         if(error){
             throw error;
         }else{
-            res.render('descuentos.ejs', {results:results,usuarios:req.usuarios});
+            res.render('usuarios/descuentos.ejs', {results:results,usuarios:req.usuarios});
         }
     });
 })
 
-
+//DESCUENTOS: SE PUEDEN CREAR, EDITAR Y ELIMINAR LOS DESCUENTOS, TAMBIEN SU ESTADO, ACTIVO O INACTIVO
+//HACE FALTA QUE CUANDO ESTEN INACTIVOS NO SE MUESTREN EN EL PANEL USUARIO
 router.get('/descuentos-admin', authController.AuthenticatedAdmin, (req,res)=>{
 
     conexion.query('SELECT * FROM descuentos', (error, results)=>{
         if(error){
             throw error;
         }else{
-            res.render('descuentos-admin.ejs', {results:results,usuarios:req.usuarios});
+            res.render('admin/descuentos-admin.ejs', {results:results,usuarios:req.usuarios});
         }
     });
 })
-
+//EDITAR LOS DESCUENTOS ADMINISTRATIVO
 router.get('/editar-descuento/:id', authController.AuthenticatedAdmin, (req,res)=>{    
     const id = req.params.id;
     conexion.query('SELECT * FROM descuentos WHERE iddescuentos = ?',[id] , (error, results) => {
         if (error) {
             throw error;
         }else{            
-            res.render('editar-descuento.ejs', {descuentos:results[0],alert:false});            
+            res.render('admin/editar-descuento.ejs', {descuentos:results[0],alert:false});            
         }        
     });
 });
-
-
+//BORRAR LOS DESCUENTOS ADMINISTRATIVO
 router.get('/borrar-descuento/:id', authController.AuthenticatedAdmin, (req, res) => {
     const id = req.params.id;
     conexion.query('DELETE FROM descuentos WHERE iddescuentos = ?',[id], (error, results)=>{
@@ -289,15 +286,8 @@ router.get('/borrar-descuento/:id', authController.AuthenticatedAdmin, (req, res
 
 //CREAR DESCUENTO
 router.get('/crear-descuento', authController.AuthenticatedAdmin, (req,res)=>{
-    res.render('crear-descuento.ejs', {alert:false})
+    res.render('admin/crear-descuento.ejs', {alert:false})
 })
-
-
-router.get('/test', authController.AuthenticatedAdmin, (req,res)=>{
-    res.render('empleado/test', {alert:false})
-})
-
-
 
 
 //router para metodos de controller
@@ -311,7 +301,5 @@ router.post('/actualizarproductos', crud.actualizarproductos) //actualizarProduc
 router.post('/crearproductos', crud.crearpartes)
 router.post('/crear-descuentos', crud.crearDescuento)
 router.get('/logout', authController.logout)
-
-
 
 module.exports = router

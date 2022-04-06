@@ -1,4 +1,4 @@
-<%- include("./template/head.ejs") %>
+<%- include("./head.ejs") %>
     <title>Admin Partes PartsCO</title>
     <meta name="description" content="">
   </head>
@@ -6,7 +6,7 @@
   <body>
     <header>
       <section>
-        <%- include("./template/nav.ejs") %>
+        <%- include("./nav.ejs") %>
       </section>
     </header>
     <section class="container position-absolute top-50 start-50 translate-middle">
@@ -17,7 +17,7 @@
           <a href="/crear-parte" id="create" name="create" class="btn btn-outline-dark mt-4"><i class="fa-solid fa-user-plus"></i> Añadir parte</a>
         </div>
         <section>
-          <div class="container shadow-lg mb-5">
+          <div class="container mb-5">
             
             <table id="usuarios" class="table table-striped table-bordered text-center table-hover nowrap" style="width:100%">
               <thead>
@@ -47,14 +47,11 @@
                 <%})%>
               </tbody>
             </table>
-    
           </div>
-        </section>
-    
+        </section>   
       </div>
     </section>
-    
-    
+
     <script>
       $(document).ready(function() {
         $('#usuarios').DataTable({
@@ -76,8 +73,6 @@
             }
         });
       });
-    
-    </script>
-        
+    </script>        
     </body>
-    </html>
+</html>
