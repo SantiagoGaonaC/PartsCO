@@ -2,13 +2,11 @@
     <title>Descuento Admin PartsCO</title>
     <meta name="description" content="">
   </head>
-
   <body>
     <header>
       <section class="container">
         <%- include("./nav.ejs") %>
       </section>
-
       <body class="text-center">
         <% if (descuentos) { %>
         <div>
@@ -17,15 +15,12 @@
               <form class="row g-3" id="formLogin" action="/descuentosA" method="POST">
                 <h1 class="h3 mb-3 fw-normal"><strong>Editar Descuento</strong></h1>
                 <input id="iddescuentos" name="iddescuentos" value="<%= descuentos.iddescuentos %>" hidden>
-    
                 <div class="row">
                   <div class="col-md-6 mb-4">
-      
                     <div class="position-relative">
                       <label for="nombre" class="form-label">Título Descuento</label>
                       <input type="text" name="titulo" class="form-control" id="titulo" value="<%= descuentos.titulo  %>">
                   </div>
-      
                   </div>
                   <div class="col-md-6 mb-4">
                     <div class="position-relative">
@@ -36,12 +31,10 @@
                         </select></div>
                   </div>
                 </div>
-      
                 <div class="position-relative">
                     <label for="apellido" class="form-label">Descripción</label>
                       <input type="text" name="descripcion" class="form-control" id="descripcion" value="<%= descuentos.descripcion  %>">
                     </div>
-    
               <div class="col-12">
                 <button class="w-100 btn btn-primary fw-bold" type="submit">Enviar</button>
               </div>
@@ -52,7 +45,6 @@
                 <p class="mt-1 mb-3 text-muted">&copy;Proyecto integrador PartsCO 2022-1</p>
             </main>
           </div>
-        
         </div>
         <% } %>
         <% if(alert){ %>
@@ -68,5 +60,4 @@
             })
           </script>
         <% } %>
-    
       </body>

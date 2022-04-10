@@ -2,27 +2,22 @@
     <title>Crear Descuento Admin PartsCO</title>
     <meta name="description" content="">
   </head>
-
   <body>
     <header>
       <section class="container">
         <%- include("./nav.ejs") %>
       </section>
     </header>
-
       <div class="position-absolute top-50 start-50 translate-middle">
         <main class="form-signin text-center shadow-lg p-2 mb-5">
           <form class="row g-3" id="formLogin" action="/crear-descuentos" method="POST">
             <h1 class="h3 mb-3 fw-normal"><strong>Crear Descuento</strong></h1>
-
             <div class="row">
               <div class="col-md-6 mb-4">
-  
                 <div class="position-relative">
                   <label for="nombre" class="form-label">Título Descuento</label>
                   <input type="text" name="titulo" class="form-control" id="titulo" value="">
               </div>
-  
               </div>
               <div class="col-md-6 mb-4">
                 <div class="position-relative">
@@ -33,12 +28,10 @@
                     </select></div>
               </div>
             </div>
-  
             <div class="position-relative">
                 <label for="apellido" class="form-label">Descripción</label>
                   <input type="text" name="descripcion" class="form-control" id="descripcion" value="">
                 </div>
-
           <div class="col-12">
             <button class="w-100 btn btn-primary fw-bold" type="submit">Enviar</button>
           </div>
@@ -51,4 +44,3 @@
       </div>
   </body>
 </html>
-    

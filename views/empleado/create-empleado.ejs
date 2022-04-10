@@ -4,24 +4,23 @@
     <link href="css/signin.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
   </head>
-
   <body class="text-center">
     <div>
       <div class="position-absolute top-50 start-50 translate-middle">
         <main class="form-signin text-center shadow-lg p-6 mb-5">
-          <form class="row g-3" id="formLogin" action="/create" method="POST">
-            <h1 class="h3 mb-3 fw-normal"><strong>Registrar Usuario</strong></h1>
+          <form class="row g-3" id="formLogin" action="/create-empleado" method="POST">
+            <h1 class="h3 mb-3 fw-normal"><strong>Registrar Usuario | Empleado</strong></h1>
           <div class="row">
             <div class="col-md-6 mb-4">
               <div class="position-relative">
                 <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" name="nombre" class="form-control" id="nombre" value="">
+                <input type="text" name="nombre" class="form-control" id="nombre">
             </div>
             </div>
             <div class="col-md-6 mb-4">
               <div class="position-relative">
                 <label for="apellido" class="form-label">Apellido</label>
-                <input type="text" name="apellido" class="form-control" id="apellido" value="">
+                <input type="text" name="apellido" class="form-control" id="apellido" >
               </div>
             </div>
           </div>
@@ -29,13 +28,13 @@
             <div class="col-md-6 mb-4">
               <div class="position-relative">
                 <label for="email" class="form-label">Email</label>
-                <input type="text" name="email" class="form-control" id="email" value="">
+                <input type="text" name="email" class="form-control" id="email">
               </div>
             </div>
             <div class="col-md-6 mb-4">
               <div class="position-relative">
                 <label for="email" class="form-label">Teléfono</label>
-                <input type="number" name="telefono" class="form-control" id="telefono" value="">
+                <input type="number" name="telefono" class="form-control" id="telefono">
               </div>
             </div>
           </div>
@@ -43,9 +42,10 @@
             <div class="col-md-6 mb-4">
               <div class="position-relative">
                 <label for="email" class="form-label">Número Documento</label>
-                <input type="number" name="ndocumento" class="form-control" id="ndocumento" value="">
+                <input type="number" name="ndocumento" class="form-control" id="ndocumento">
               </div>
             </div>
+
             <div class="col-md-6 mb-4">
               <div class="position-relative ">
                 <label for="rol" class="form-label ">Tipo Documento</label>
@@ -56,34 +56,26 @@
               </div>
             </div>
           </div>
+
           <div class="row">
-            <div class="col-md-6 mb-4">
+            <div class=" mb-4">
               <div class="position-relative">
                 <label for="email" class="form-label">Direccion</label>
-                <input type="text" name="direccion" class="form-control" id="direccion" value="">
+                <input type="text" name="direccion" class="form-control" id="direccion">
               </div>
             </div>
-            <div class="col-md-6 mb-4">
-              <div class="position-relative">
-                <label for="rol" class="form-label">Rol</label>
-                <select class="form-select" name="rol" id="rol" tabindex="3">
-                    <option value="usuario">Usuario</option>
-                    <option value="empleado">Empleado</option>
-                    <option value="admin">Admin</option>
-                  </select>
-              </div>
-            </div>
-          </div>
+
         <div class="position-relative">
           <label for="password" class="form-label">Contraseña</label>
-          <input type="password" name="password" class="form-control" id="password" value="">
+          <input type="password" name="password" class="form-control" id="password">
         </div>
+
           <div class="col-12">
             <button class="w-100 btn btn-primary fw-bold" type="submit">Enviar</button>
           </div>
           </form>
             <br>
-            <a href="/admin" type="button" class="w-100 btn btn-primary fw-bold">Panel Admin</a>
+            <a href="/admin-empleado" type="button" class="w-100 btn btn-primary fw-bold">Panel Admin</a>
             <br>
             <p class="mt-1 mb-3 text-muted">&copy;Proyecto integrador PartsCO 2022-1</p>
         </main>

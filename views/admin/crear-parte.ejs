@@ -2,30 +2,24 @@
     <title>PartsCO crear Partes Admin</title>
     <meta name="description" content="">
   </head>
-
   <body>
     <header>
       <section>
         <%- include("./nav.ejs") %>
       </section>
     </header>
-
     <div>
         <div class="position-absolute top-50 start-50 translate-middle">
           <main class="form-signin text-center shadow-lg p-2 mb-5">
             <form class="row g-3" id="formLogin" action="/crearproductos" method="POST">
               <h1 class="h3 mb-3 fw-normal"><strong>Añadir parte</strong></h1>
-  
               <input id="idarticulo" name="idarticulo" value="" hidden>
-  
               <div class="row">
                 <div class="col-md-6 mb-4">
-    
                   <div class="position-relative">
                     <label for="nombre" class="form-label">Nombre</label>
                     <input type="text" name="nombre" class="form-control" id="nombre" value="">
                 </div>
-    
                 </div>
                 <div class="col-md-6 mb-4">
                   <div class="position-relative">
@@ -34,16 +28,13 @@
                     </div>
                 </div>
               </div>
-      
               <div class="row">
                 <div class="col-md-6 mb-4">
                   <div class="position-relative">
                       <label for="email" class="form-label">Valor</label>
                       <input type="number" name="valor" class="form-control" id="valor" value="">
                     </div>
-  
                 </div>
-    
                 <div class="col-md-6 mb-4">
                   <div class="position-relative">
                     <label for="rol" class="form-label">Estado</label>
@@ -62,7 +53,6 @@
                   <label for="email" class="form-label">Descripción</label>
                   <input type="text" name="descripcion" class="form-control" id="descripcion" value="">
                 </div>
-  
             <div class="col-12">
               <button class="w-100 btn btn-primary fw-bold" type="submit">Enviar</button>
             </div>
@@ -73,10 +63,6 @@
               <p class="mt-1 mb-3 text-muted">&copy;Proyecto integrador PartsCO 2022-1</p>
           </main>
         </div>
-      
       </div>
-
-
-    
   </body>
 </html>

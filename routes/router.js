@@ -52,7 +52,7 @@ router.get('/edit/:id', authController.AuthenticatedAdmin, (req,res)=>{
     });
 });
 
-//RUTA ELIMINAR USUARIO
+//RUTA ELIMINAR(INACTIVO-ACTIVO) USUARIO
 router.get('/delete/:id', authController.AuthenticatedAdmin, (req, res) => {
     const id = req.params.id;
     const query_estado = 'SELECT estado from usuarios where idusuario = ?'
@@ -150,7 +150,7 @@ router.get('/productos', authController.AuthenticatedAdmin, (req,res)=>{
     });
 })
 
-//RUTA ELIMINAR PRODUCTO
+//RUTA ELIMINAR PRODUCTO - CAMBIAR EL ELIMINAR A ACTUALIZAR
 router.get('/eliminar/:id', authController.AuthenticatedAdmin, (req, res) => {
     const id = req.params.id;
     conexion.query('DELETE FROM articulos WHERE idarticulo = ?',[id], (error, results)=>{
@@ -296,11 +296,79 @@ router.get('/panelEmpleado', authController.AuthenticatedAdmin, (req,res)=>{
 })
 
 
+//CREAR LA RUTA PARA EL EMPLEADO Y HACER UN SELECT DE TODOS LOS USUARIOS MENOS LOS ADMIN
+router.get('/admin-empleado', authController.AuthenticatedAdmin, (req,res)=>{
+    const admin = 'admin';
+    const empleado = 'empleado'; 
+    //SELECT * FROM usuarios WHERE rol != 'admin' and rol != 'empleado';
+    conexion.query('SELECT * FROM usuarios WHERE rol != ? and rol != ?',[admin,empleado], (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('empleado/admin-empleado.ejs', {results:results});
+        }
+    })
+})
+
+//RUTA PARA CREAR USUARIO POR ROL - DENTRO DEL PANEL EMPLEADO (INFORMACION Y GESTIÓN DE USUARIOS)
+router.get('/create-empleado', authController.AuthenticatedAdmin, (req,res)=>{
+    res.render('empleado/create-empleado', {alert:false})
+})
+
+//RUTA EDITAR USUARIO, SE ENCUENTRA DENTRO DEL PANEL DE (INFORMACION Y GESTIÓN DE USUARIOS) COMO BOTÓN
+router.get('/edit-empleado/:id', authController.AuthenticatedAdmin, (req,res)=>{    
+    const id = req.params.id;
+    conexion.query('SELECT * FROM usuarios WHERE idusuario = ?',[id] , (error, results) => {
+        if (error) {
+            throw error;
+        }else{            
+            res.render('empleado/edit-empleado.ejs', {usuarios:results[0],alert:false});            
+        }        
+    });
+});
+
+//RUTA ELIMINAR(INACTIVO-ACTIVO) USUARIO
+router.get('/delete-empleado/:id', authController.AuthenticatedAdmin, (req, res) => {
+    const id = req.params.id;
+    const query_estado = 'SELECT estado from usuarios where idusuario = ?'
+    query_id_estado = 'UPDATE usuarios SET estado = ? WHERE idusuario = ?'
+    conexion.query(query_estado,[id], (error, results)=>{
+        if(error){
+            console.log(error);
+        }else{      
+            const json = JSON.parse(JSON.stringify(results[0]));
+            const estado = json[Object.keys(json)];
+            if (estado=='Inactivo'){
+                const estado_activo = 'Activo';
+                conexion.query(query_id_estado,[estado_activo,id], (error, results)=>{
+                    if(error){
+                        console.log(error);
+                    }else{      
+                        res.redirect('/admin-empleado');   
+                    }
+                })
+            }else{
+                const estado_Inactivo = 'Inactivo';
+                conexion.query(query_id_estado,[estado_Inactivo,id], (error, results)=>{
+                    if(error){          
+                        console.log(error);
+                    }else{      
+                        res.redirect('/admin-empleado');         
+                    }
+                })
+            }  
+        }
+    })
+});
+
+
 //router para metodos de controller
 router.post('/register', authController.register)
 router.post('/login', authController.login)
-router.post('/create', authController.registerAdmin)
-router.post('/update', crud.update)
+router.post('/create', authController.registerAdmin) //Crear USUARIOS por parte del Administrador
+router.post('/create-empleado', authController.registerEmpleado) //Crear USUARIOS por parte del EMPLEADO
+router.post('/update', crud.update) //Actualizar USUARIOS por parte del ADMIN
+router.post('/update-empleado', crud.updateEmpleado) //Actualizar USUARIOS por parte del EMPLEADO
 router.post('/descuentosA', crud.descuentosA)
 
 router.post('/actualizarproductos', crud.actualizarproductos) //actualizarProductos

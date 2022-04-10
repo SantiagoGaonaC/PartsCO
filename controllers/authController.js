@@ -67,7 +67,63 @@ exports.register = async (req,res)=>{
         console.log(error)
     }
         //sentencia sql para registrar en la tabla usuarios
+}
+
+exports.registerEmpleado = async (req,res)=>{
+  email_ex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    try {
+        const nombre = req.body.nombre
+        const apellido = req.body.apellido
+        const email = req.body.email
+        const password = req.body.password
+        const usuario = "usuario"
+        const telefono = req.body.telefono
+        const direccion = req.body.direccion
+
+        const ndocumento = req.body.ndocumento
+        const tdocumento = req.body.tdocumento
+        const documento = tdocumento + ' ' +ndocumento
+        const estado = "Activo"
+        
+        if(!nombre || !apellido || !email || !password || !direccion || !telefono || !ndocumento){ //si no ingresó nada se indica que ingrese algo
+            res.render('register',NotifySweetAlert.NadaRegisterUser())
+        }
+          else if(nombre.length>20 || apellido.length>20 || password.length>30){
+            res.render('register',NotifySweetAlert.TamañoRegisterUser())
+        }
+          else if(!email_ex.test(email)){
+            res.render('register',NotifySweetAlert.EmailRegisterUser())
+          }
+        else{
+          //hash de la pass
+          let passHash = await bcryptjs.hash(password, 8)
+          conexion.query('INSERT INTO usuarios SET ?', {nombre:nombre, apellido:apellido, email:email, password:passHash, rol:usuario, direccion:direccion, telefono:telefono, documento:documento, estado:estado}, (error, results)=>{
+            if(error)
+            {
+              if(error.code == 'ER_DUP_ENTRY' || error.errno == 1062)
+              {
+                  console.log('Usuario duplicado')
+                  res.render('register',NotifySweetAlert.ExisteMailUser())
+              }
+              else{
+                console.log('Otro error en la query')
+                console.log(error)
+                res.redirect('/')
+              }
+            }else{
+
+              console.log('Usuario registrado')
+              //res.redirect('/',NotifySweetAlert.RegistroExitoso())
+              res.render('register',NotifySweetAlert.RegistroExitosoEmpleado())
+            }
+      })
+        }
+    } catch (error) {
+        console.log(error)
     }
+        //sentencia sql para registrar en la tabla usuarios
+}
+
 
 exports.registerAdmin = async (req,res)=>{
   email_ex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
