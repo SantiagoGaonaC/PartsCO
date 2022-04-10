@@ -290,6 +290,12 @@ router.get('/crear-descuento', authController.AuthenticatedAdmin, (req,res)=>{
 })
 
 
+//RUTAS DE EMPLEADOS
+router.get('/panelEmpleado', authController.AuthenticatedAdmin, (req,res)=>{
+    res.render('empleado/panelEmpleado.ejs', {alert:false})
+})
+
+
 //router para metodos de controller
 router.post('/register', authController.register)
 router.post('/login', authController.login)

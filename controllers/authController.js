@@ -224,7 +224,7 @@ exports.login = async(req,res)=>{
                                 httpOnly: true
                             }
                             res.cookie('jwtAdmin', token, opcionesCookiesAdmin) //nombre de la cookie EDITAR COOKIE
-                            res.render('login',NotifySweetAlert.AdminLoginUp())
+                            res.render('login',NotifySweetAlert.EmpleadoLoginUp())
                         }
                     })
                 }

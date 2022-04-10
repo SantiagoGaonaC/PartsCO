@@ -1,4 +1,5 @@
 class NotifySweetAlert {
+
   NoEmailNoPassword() {
       return {
         alert:true,
@@ -41,6 +42,17 @@ class NotifySweetAlert {
       showConfirmButton: false,
       timer: 600,
       ruta: 'panel'
+    }
+  }
+  EmpleadoLoginUp(){
+    return {
+      alert:true,
+      alertTitle: "Conexión exitosa",
+      alertMessage: "Login Admin exitoso",
+      alertIcon: 'success',
+      showConfirmButton: false,
+      timer: 600,
+      ruta: 'panelEmpleado'
     }
   }
   UserPassEmail(){
