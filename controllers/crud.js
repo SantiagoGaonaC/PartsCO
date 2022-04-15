@@ -27,6 +27,7 @@ exports.update = (req, res)=>{
 });
 };
 
+
 exports.updateEmpleado = (req, res)=>{
     const idusuario = req.body.idusuario;
     const nombre = req.body.nombre

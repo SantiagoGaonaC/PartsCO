@@ -14,7 +14,7 @@
       <h1 class="text-center">Gestión solicitudes</h1>
       <div class="container shadow">
         <section>
-          <div class="container shadow-lg mb-5">
+          <div class="container mb-5">
             <table id="tabla" class="table table-striped table-bordered text-center table-hover nowrap" style="width:100%">
               <thead>
                 <tr class="table-dark text-white">
@@ -59,6 +59,7 @@
             .appendTo('#tabla thead');
      
         var table = $('#tabla').DataTable({
+          "responsive": true,
           "language": {
                     "lengthMenu": "Mostrar _MENU_ registros",
                     "zeroRecords": "No se encontraron resultados",
