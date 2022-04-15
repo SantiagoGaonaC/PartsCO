@@ -16,14 +16,14 @@ router.get('/', authController.Authenticated, (req,res)=>{
             res.render('usuarios/index', {results:results, usuarios:req.usuarios, alert:true});
         }
     });
-})
+});
 
 router.get('/login', (req,res)=>{
     res.render('login', {alert:false})
-})
+});
 router.get('/register', (req,res)=>{
     res.render('register', {alert:false})
-})
+});
 
 //RUTA PARA LA INFORMACION Y GESTIÓN DE USUARIOS
 router.get('/admin', authController.AuthenticatedAdmin, (req,res)=>{
@@ -34,11 +34,11 @@ router.get('/admin', authController.AuthenticatedAdmin, (req,res)=>{
             res.render('admin/admin.ejs', {results:results});
         }
     })
-})
+});
 //RUTA PARA CREAR USUARIO POR ROL - DENTRO DEL PANEL (INFORMACION Y GESTIÓN DE USUARIOS)
 router.get('/create', authController.AuthenticatedAdmin, (req,res)=>{
     res.render('admin/create', {alert:false})
-})
+});
 
 //RUTA EDITAR USUARIO, SE ENCUENTRA DENTRO DEL PANEL DE (INFORMACION Y GESTIÓN DE USUARIOS) COMO BOTÓN
 router.get('/edit/:id', authController.AuthenticatedAdmin, (req,res)=>{    
@@ -90,7 +90,7 @@ router.get('/delete/:id', authController.AuthenticatedAdmin, (req, res) => {
 //PANEL PRINCIPAL ADMIN DENTRO DE ESTE ESTÁN TODAS LAS RUTAS PARA QUE EL ADMIN SELECCIONE LA QUE QUIERA
 router.get('/panel', authController.AuthenticatedAdmin, (req,res)=>{
     res.render('admin/panel', {alert:false})
-})
+});
 
 //Logs USUARIO | Historial | DEBE ESTAR LOGUEADO COMO ROL ADMIN
 router.get('/logs', authController.AuthenticatedAdmin, (req,res)=>{
@@ -101,15 +101,15 @@ router.get('/logs', authController.AuthenticatedAdmin, (req,res)=>{
             res.render('admin/logs.ejs', {results:results});
         }
     });
-})
+});
 
 //NAV
 router.get('/parcial/nav.ejs', authController.AuthenticatedAdmin, (req,res)=>{
     res.render('parcial/nav.ejs')
-})
+});
 router.get('/parcial/logout', authController.AuthenticatedAdmin, (req,res)=>{
     res.render('/parcial/logout')
-})
+});
 
 //SOLICITAR ARTICULO
 router.get('/solicitar/:id', authController.Authenticated, (req, res) => {
@@ -148,7 +148,7 @@ router.get('/productos', authController.AuthenticatedAdmin, (req,res)=>{
             res.render('admin/productos.ejs', {results:results, usuarios:req.usuarios});
         }
     });
-})
+});
 
 //RUTA ELIMINAR PRODUCTO - CAMBIAR EL ELIMINAR A ACTUALIZAR
 router.get('/eliminar/:id', authController.AuthenticatedAdmin, (req, res) => {
@@ -177,7 +177,7 @@ router.get('/editar/:id', authController.AuthenticatedAdmin, (req,res)=>{
 //CREAR PARTE / ARTICULO
 router.get('/crear-parte', authController.AuthenticatedAdmin, (req,res)=>{
     res.render('admin/crear-parte.ejs', {alert:false})
-})
+});
 
 //SOLICITUDES EDITAR Y BORRAR LAS SOLICITUDES DE LOS USUARIOS
 router.get('/solicitudes', authController.AuthenticatedAdmin, (req,res)=>{
@@ -189,7 +189,7 @@ router.get('/solicitudes', authController.AuthenticatedAdmin, (req,res)=>{
             res.render('admin/solicitudes.ejs', {results:results});
         }
     });
-})
+});
 
 //CAMBIAR ESTADO DE LA SOLICITUD - NO TERMINADA O TERMINADA
 router.get('/terminar-solicitud/:id', authController.AuthenticatedAdmin, (req, res) => {
@@ -247,7 +247,7 @@ router.get('/descuentos', authController.Authenticated, (req,res)=>{
             res.render('usuarios/descuentos.ejs', {results:results,usuarios:req.usuarios});
         }
     });
-})
+});
 
 //DESCUENTOS: SE PUEDEN CREAR, EDITAR Y ELIMINAR LOS DESCUENTOS, TAMBIEN SU ESTADO, ACTIVO O INACTIVO
 //HACE FALTA QUE CUANDO ESTEN INACTIVOS NO SE MUESTREN EN EL PANEL USUARIO
@@ -260,7 +260,7 @@ router.get('/descuentos-admin', authController.AuthenticatedAdmin, (req,res)=>{
             res.render('admin/descuentos-admin.ejs', {results:results,usuarios:req.usuarios});
         }
     });
-})
+});
 //EDITAR LOS DESCUENTOS ADMINISTRATIVO
 router.get('/editar-descuento/:id', authController.AuthenticatedAdmin, (req,res)=>{    
     const id = req.params.id;
@@ -287,13 +287,13 @@ router.get('/borrar-descuento/:id', authController.AuthenticatedAdmin, (req, res
 //CREAR DESCUENTO
 router.get('/crear-descuento', authController.AuthenticatedAdmin, (req,res)=>{
     res.render('admin/crear-descuento.ejs', {alert:false})
-})
+});
 
 
 //RUTAS DE EMPLEADOS
 router.get('/panelEmpleado', authController.AuthenticatedAdmin, (req,res)=>{
     res.render('empleado/panelEmpleado.ejs', {alert:false})
-})
+});
 
 
 //CREAR LA RUTA PARA EL EMPLEADO Y HACER UN SELECT DE TODOS LOS USUARIOS MENOS LOS ADMIN
@@ -308,12 +308,12 @@ router.get('/admin-empleado', authController.AuthenticatedAdmin, (req,res)=>{
             res.render('empleado/admin-empleado.ejs', {results:results});
         }
     })
-})
+});
 
 //RUTA PARA CREAR USUARIO POR ROL - DENTRO DEL PANEL EMPLEADO (INFORMACION Y GESTIÓN DE USUARIOS)
 router.get('/create-empleado', authController.AuthenticatedAdmin, (req,res)=>{
     res.render('empleado/create-empleado', {alert:false})
-})
+});
 
 //RUTA EDITAR USUARIO, SE ENCUENTRA DENTRO DEL PANEL DE (INFORMACION Y GESTIÓN DE USUARIOS) COMO BOTÓN
 router.get('/edit-empleado/:id', authController.AuthenticatedAdmin, (req,res)=>{    
@@ -359,6 +359,17 @@ router.get('/delete-empleado/:id', authController.AuthenticatedAdmin, (req, res)
             }  
         }
     })
+});
+
+//ROUTER DE LOG PARA EL PANEL EMPLEADO
+router.get('/logs-empleados', authController.AuthenticatedAdmin, (req,res)=>{
+    conexion.query('SELECT * FROM sesiones', (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('empleado/logs-empleados.ejs', {results:results});
+        }
+    });
 });
 
 

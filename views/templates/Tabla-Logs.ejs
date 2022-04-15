@@ -1,0 +1,28 @@
+<div class="container shadow-lg mb-5 container-fluid position-absolute top-50 start-50 translate-middle">
+    <div class="row">
+      <section class="">
+        <div class="container  mb-5">
+          <h1 class="text-center mt-4"> Historial ingreso de usuarios</h1>
+          <table id="usuarios" class="table table-striped table-bordered text-center table-hover nowrap" style="width:100%">
+            <thead>
+              <tr class="table-dark text-white">
+                <th scope="col">ID por sesiones</th>
+                <th scope="col">Fechas de sesión</th>
+                <th scope="col">ID Usuarios</th>    
+              </tr>
+            </thead>
+            <tbody>
+              <% results.forEach((sesiones)=>{ %>
+              <tr>
+                <td><%= sesiones.idsesion %></td>
+                <td><%= sesiones.fecha_sesion %></td>
+                <td><%= sesiones.usuarios_idusuario %></td>
+              </tr>
+              <%})%>
+            </tbody>
+          </table>
+        </div>
+        <hr>
+      </section>
+    </div>
+  </div>
