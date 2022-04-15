@@ -91,6 +91,23 @@ exports.crearpartes = (req, res)=>{
     });
 }
 
+exports.crearpartesEmpleado = (req, res)=>{
+    const nombre = req.body.nombre
+    const stock = req.body.stock
+    const valor = req.body.valor
+    const estado = req.body.estado
+    const descripcion = req.body.descripcion
+    const categoria = req.body.categoria
+
+    conexion.query('INSERT INTO articulos SET ?',[{nombre:nombre, stock:stock, valor:valor, estado:estado, descripcion:descripcion, categoria:categoria}], (error, results)=>{
+        if(error){
+            console.log(error);
+        }else{           
+            res.redirect('/productos-empleado');         
+        }
+    });
+}
+
 exports.descuentosA = (req, res)=>{
     const iddescuentos = req.body.iddescuentos;
     const titulo = req.body.titulo

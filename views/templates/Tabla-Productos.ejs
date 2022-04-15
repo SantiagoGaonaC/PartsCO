@@ -1,0 +1,40 @@
+<section class="container position-absolute top-50 start-50 translate-middle">
+    <h1 class="text-center">Catálogo de partes Administrativo</h1>
+    <div class="container shadow">
+      <div class="container mb-2">
+        <a href="/crear-parte" id="create" name="create" class="btn btn-outline-dark mt-4"><i class="fa-solid fa-user-plus"></i> Añadir parte</a>
+      </div>
+      <section>
+        <div class="container mb-5">
+          <table id="usuarios" class="table table-striped table-bordered text-center table-hover nowrap" style="width:100%">
+            <thead>
+              <tr class="table-dark text-white">
+                <th scope="col">ID de artículo</th>
+                <th scope="col">Categoría</th>
+                <th scope="col">Nombre</th>    
+                <th scope="col">Descripción</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% results.forEach((articulos)=>{ %>
+              <tr>
+                <td><%= articulos.idarticulo %></td>
+                <td><%= articulos.categoria %></td>
+                <td><%= articulos.nombre %></td>
+                <td><%= articulos.descripcion %></td>
+                <td><%= articulos.estado %></td>
+                <td>$<%= articulos.valor %></td>
+                <td>
+                  <a href="/editar/<%= articulos.idarticulo %>" class="btn btn-outline-info"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                </td>
+              </tr>
+              <%})%>
+            </tbody>
+          </table>
+        </div>
+      </section>   
+    </div>
+  </section>

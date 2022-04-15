@@ -372,6 +372,32 @@ router.get('/logs-empleados', authController.AuthenticatedAdmin, (req,res)=>{
     });
 });
 
+//ROUTER PARA EL PANEL DE PRODUCTOS (CRUD) por parte del empleado
+router.get('/productos-empleado', authController.AuthenticatedAdmin, (req,res)=>{
+    
+    conexion.query('SELECT * FROM articulos', (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('empleado/productos-empleado.ejs', {results:results, usuarios:req.usuarios});
+        }
+    });
+});
+
+router.get('/editar-parte-empleado/:id', authController.AuthenticatedAdmin, (req,res)=>{    
+    const id = req.params.id;
+    conexion.query('SELECT * FROM articulos WHERE idarticulo = ?',[id] , (error, results) => {
+        if (error) {
+            throw error;
+        }else{            
+            res.render('empleado/editar-parte-empleado.ejs', {articulos:results[0],alert:false});            
+        }        
+    });
+});
+
+router.get('/crear-parte-empleado', authController.AuthenticatedAdmin, (req,res)=>{
+    res.render('empleado/crear-parte-empleado.ejs', {alert:false})
+});
 
 //router para metodos de controller
 router.post('/register', authController.register)
@@ -383,7 +409,8 @@ router.post('/update-empleado', crud.updateEmpleado) //Actualizar USUARIOS por p
 router.post('/descuentosA', crud.descuentosA)
 
 router.post('/actualizarproductos', crud.actualizarproductos) //actualizarProductos
-router.post('/crearproductos', crud.crearpartes)
+router.post('/crearproductos', crud.crearpartes)//ADMIN
+router.post('/crearproductosEmpleado', crud.crearpartesEmpleado)//EMPLEADO
 router.post('/crear-descuentos', crud.crearDescuento)
 router.get('/logout', authController.logout)
 
