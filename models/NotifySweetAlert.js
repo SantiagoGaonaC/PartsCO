@@ -187,6 +187,28 @@ class NotifySweetAlert {
       ruta: 'admin-empleado'
     }
   }
+  NadaCrearParte(){
+    return{
+      alert:true,
+      alertTitle: "Advertencia",
+      alertMessage: "Ingrese los datos del formulario completos",
+      alertIcon: 'info',
+      showConfirmButton: true,
+      timer: false,
+      ruta: 'crear-parte'
+    }
+  }
+  NadaCrearParteEmpleado(){
+    return{
+      alert:true,
+      alertTitle: "Advertencia",
+      alertMessage: "Ingrese los datos del formulario completos",
+      alertIcon: 'info',
+      showConfirmButton: true,
+      timer: false,
+      ruta: 'crear-parte-empleado'
+    }
+  }
 }
 
 

@@ -1,4 +1,5 @@
-const conexion = require('../database/db')
+const conexion = require('../database/db');
+const NotifySweetAlert = require('../models/NotifySweetAlert');
 
 exports.update = (req, res)=>{
     const idusuario = req.body.idusuario;
@@ -73,7 +74,6 @@ exports.actualizarproductos = (req, res)=>{
     });
 };
 
-
 exports.crearpartes = (req, res)=>{
     const nombre = req.body.nombre
     const stock = req.body.stock
@@ -82,13 +82,17 @@ exports.crearpartes = (req, res)=>{
     const descripcion = req.body.descripcion
     const categoria = req.body.categoria
 
-    conexion.query('INSERT INTO articulos SET ?',[{nombre:nombre, stock:stock, valor:valor, estado:estado, descripcion:descripcion, categoria:categoria}], (error, results)=>{
-        if(error){
-            console.log(error);
-        }else{           
-            res.redirect('/productos');         
-        }
-    });
+    if(!nombre || !stock || !valor || !estado || !descripcion || !categoria){
+        res.render('admin/crear-parte.ejs', NotifySweetAlert.NadaCrearParte())
+    }else{
+        conexion.query('INSERT INTO articulos SET ?',[{nombre:nombre, stock:stock, valor:valor, estado:estado, descripcion:descripcion, categoria:categoria}], (error, results)=>{
+            if(error){
+                console.log(error);
+            }else{           
+                res.redirect('/productos');         
+            }
+        });
+    }
 }
 
 exports.crearpartesEmpleado = (req, res)=>{
@@ -99,13 +103,17 @@ exports.crearpartesEmpleado = (req, res)=>{
     const descripcion = req.body.descripcion
     const categoria = req.body.categoria
 
-    conexion.query('INSERT INTO articulos SET ?',[{nombre:nombre, stock:stock, valor:valor, estado:estado, descripcion:descripcion, categoria:categoria}], (error, results)=>{
-        if(error){
-            console.log(error);
-        }else{           
-            res.redirect('/productos-empleado');         
-        }
-    });
+    if(!nombre || !stock || !valor || !estado || !descripcion || !categoria){
+        res.render('empleado/crear-parte-empleado.ejs', NotifySweetAlert.NadaCrearParteEmpleado())
+    }else{
+        conexion.query('INSERT INTO articulos SET ?',[{nombre:nombre, stock:stock, valor:valor, estado:estado, descripcion:descripcion, categoria:categoria}], (error, results)=>{
+            if(error){
+                console.log(error);
+            }else{           
+                res.redirect('/productos-empleado');         
+            }
+        });
+    }
 }
 
 exports.descuentosA = (req, res)=>{

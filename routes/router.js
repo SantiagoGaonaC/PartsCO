@@ -389,7 +389,7 @@ router.get('/editar-parte-empleado/:id', authController.AuthenticatedAdmin, (req
     conexion.query('SELECT * FROM articulos WHERE idarticulo = ?',[id] , (error, results) => {
         if (error) {
             throw error;
-        }else{            
+        }else{
             res.render('empleado/editar-parte-empleado.ejs', {articulos:results[0],alert:false});            
         }        
     });
