@@ -39,6 +39,7 @@
                   <td>
                     <a onclick="estado(<%= solicitudes.idsolicitud %>)" class="btn btn-outline-success"><i class="fa-solid fa-exchange"></i></i></a>
                     <a onclick="borrar(<%= solicitudes.idsolicitud %>)" class="btn btn-outline-danger"><i class="fa-solid fa-delete-left"></i></i></a>
+                    <a href="/factura/<%= solicitudes.idsolicitud %>" class="btn btn-outline-info"><i class="fa-solid fa-money-check-dollar"></i></a>
                   </td>
                 </tr>
                 <%})%>
@@ -49,86 +50,27 @@
       </div>
     </section>
     <script>
-    
-    
-    $(document).ready(function () {
-        // Setup - add a text input to each footer cell
-        $('#tabla thead tr')
-            .clone(true)
-            .addClass('filters')
-            .appendTo('#tabla thead');
-     
-        var table = $('#tabla').DataTable({
+
+$(document).ready(function() {
+        $('#tabla').DataTable({
           "responsive": true,
           "language": {
-                    "lengthMenu": "Mostrar _MENU_ registros",
-                    "zeroRecords": "No se encontraron resultados",
-                    "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                    "sSearch": "Busqueda general:",
-                    "oPaginate": {
-                        "sFirst": "Primero",
-                        "sLast":"Último",
-                        "sNext":"Siguiente",
-                        "sPrevious": "Anterior"
-               },
-               "sProcessing":"Procesando...",
-                },
-            orderCellsTop: true,
-            fixedHeader: true,
-            initComplete: function () {
-                var api = this.api();
-     
-                // For each column
-                api
-                    .columns()
-                    .eq(0)
-                    .each(function (colIdx) {
-                        // Set the header cell to contain the input element
-                        var cell = $('.filters th').eq(
-                            $(api.column(colIdx).header()).index()
-                        );
-                        var title = $(cell).text();
-                        $(cell).html('<input type="text" placeholder="' + title + '" />');
-     
-                        // On every keypress in this input
-                        $(
-                            'input',
-                            $('.filters th').eq($(api.column(colIdx).header()).index())
-                        )
-                            .off('keyup change')
-                            .on('keyup change', function (e) {
-                                e.stopPropagation();
-     
-                                // Get the search value
-                                $(this).attr('title', $(this).val());
-                                var regexr = '({search})'; //$(this).parents('th').find('select').val();
-     
-                                var cursorPosition = this.selectionStart;
-                                // Search the column for that value
-                                api
-                                    .column(colIdx)
-                                    .search(
-                                        this.value != ''
-                                            ? regexr.replace('{search}', '(((' + this.value + ')))')
-                                            : '',
-                                        this.value != '',
-                                        this.value == ''
-                                    )
-                                    .draw();
-     
-                                $(this)
-                                    .focus()[0]
-                                    .setSelectionRange(cursorPosition, cursorPosition);
-                            });
-                    });
-            },
+                "lengthMenu": "Mostrar _MENU_ registros",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sSearch": "Buscar:",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast":"Último",
+                    "sNext":"Siguiente",
+                    "sPrevious": "Anterior"
+			     },
+			     "sProcessing":"Procesando...",
+            }
         });
-    });
-      
-    
-    
+      });
     
       function estado(id){
         Swal.fire({

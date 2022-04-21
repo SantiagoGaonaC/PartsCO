@@ -399,6 +399,19 @@ router.get('/crear-parte-empleado', authController.AuthenticatedAdmin, (req,res)
     res.render('empleado/crear-parte-empleado.ejs', {alert:false})
 });
 
+
+//RUTA PARA CREAR LA FACTURA
+router.get('/factura/:id', authController.AuthenticatedAdmin, (req,res)=>{    
+    const id = req.params.id;
+    conexion.query('SELECT * FROM solicitudes WHERE idsolicitud = ?',[id] , (error, results) => {
+        if (error) {
+            throw error;
+        }else{            
+            res.render('admin/facturas-admin.ejs', {results:results[0],alert:false});            
+        }        
+    });
+});
+
 //router para metodos de controller
 router.post('/register', authController.register)
 router.post('/login', authController.login)

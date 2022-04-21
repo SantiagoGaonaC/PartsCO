@@ -1,0 +1,41 @@
+<%- include("./head.ejs") %>
+    <meta name="description" content="">
+    <title>Factura</title>
+</head>
+<body class="">
+  <% if (results) { %>
+    <div class="position-absolute top-50 start-50 translate-middle">
+      <main class="form-signin card text-center border-dark p-3 mb-5">
+          <h1 class="h3 mb-3 fw-normal"><strong>Confirmación de la factura</strong></h1>
+          <table id="tabla" class="table table-bordered text-center " style="width:100%">
+            <TR><TH>ID solicitud</TH>
+              <TD><%= results.idsolicitud  %></TD></TR>
+            <TR><TH>Fecha</TH>
+              <TD><%= results.fecha_hora  %></TD></TR>
+            <TR><TH>Valor Total</TH>
+              <TD><%= results.valor_total  %></TD></TR>
+            <TR><TH>Estado solicitud</TH>
+              <TD><%= results.estado_solicitud  %></TD></TR>
+            <TR><TH>Impuestos</TH>
+              <TD>IVA 19%</TD></TR>
+            <TR><TH>ID Usuario</TH>
+              <TD><%= results.usuarios_idusuario  %></TD></TR>
+            <TR><TH>ID Articulo</TH>
+              <TD><%= results.articulos_idarticulo  %></TD></TR>
+          </table>
+        <div class="col-12">
+          <a onclick="imprimirPagina();" href="/solicitudes" class="btn text-white bg-secondary">Imprimir</a>
+          <a href="/solicitudes" class="btn text-white bg-secondary">Finalizar</a>
+          <br>
+        </div>
+          <p class="mt-1 mb-3 text-muted">&copy;Proyecto integrador PartsCO 2022-1</p>
+      </main>
+    </div>
+  <% } %>
+</body>
+<script>
+  function imprimirPagina(){
+    window.print();
+  }
+</script>
+</html>
