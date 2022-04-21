@@ -118,7 +118,7 @@ router.get('/solicitar/:id', authController.Authenticated, (req, res) => {
     let info_usuario = req.usuarios
     id_usuario = Object.values(info_usuario)[0]
 
-    let query_1 = `INSERT INTO solicitudes(fecha_hora,valor_total,usuarios_idusuario,articulos_idarticulo) VALUES (NOW(),?*1.19,?,?);`;
+    let query_1 = `INSERT INTO solicitudes(fecha_hora,valor_total,usuarios_idusuario,articulos_idarticulo) VALUES (DATE_FORMAT(NOW(),'%Y-%m-%d %h:%i:%s'),?*1.19,?,?);`;
     let query_2 = `SELECT valor FROM articulos where idarticulo=?`;
 
     conexion.query(query_2,[id], (error, results)=>{

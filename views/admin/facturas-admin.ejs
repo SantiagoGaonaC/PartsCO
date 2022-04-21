@@ -8,12 +8,12 @@
       <main class="form-signin card text-center border-dark p-3 mb-5">
           <h1 class="h3 mb-3 fw-normal"><strong>Confirmación de la factura</strong></h1>
           <table id="tabla" class="table table-bordered text-center " style="width:100%">
-            <TR><TH>ID solicitud</TH>
+            <TR><TH>ID solicitud/Factura</TH>
               <TD><%= results.idsolicitud  %></TD></TR>
-            <TR><TH>Fecha</TH>
+            <TR><TH>Fecha/Hora de la solicitud</TH>
               <TD><%= results.fecha_hora  %></TD></TR>
             <TR><TH>Valor Total</TH>
-              <TD><%= results.valor_total  %></TD></TR>
+              <TD>$ <%= results.valor_total  %> COP</TD></TR>
             <TR><TH>Estado solicitud</TH>
               <TD><%= results.estado_solicitud  %></TD></TR>
             <TR><TH>Impuestos</TH>
