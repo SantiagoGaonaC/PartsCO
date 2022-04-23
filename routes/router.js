@@ -417,6 +417,43 @@ router.get('/panel-consorcio', authController.Authenticated, (req,res)=>{
     res.render('consorcio/panel-consorcio.ejs', {alert:false, usuarios:req.usuarios})
 });
 
+//RUTA INFORMACIÓN DE USUARIOS PARA EL ROL CONSORCIO
+router.get('/usuarios-consorcio', authController.Authenticated, (req,res)=>{
+    const admin = 'admin';
+    const empleado = 'empleado'; 
+    //SELECT * FROM usuarios WHERE rol != 'admin' and rol != 'empleado';
+    conexion.query('SELECT * FROM usuarios WHERE rol != ?',[admin], (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('consorcio/usuarios-consorcio.ejs', {results:results, usuarios:req.usuarios});
+        }
+    })
+});
+
+//RUTA PARA VER LOGS DE INGRESO USUARIOS PARA EL ROL CONSORCIO
+router.get('/logs-consorcio', authController.Authenticated, (req,res)=>{
+    conexion.query('SELECT * FROM sesiones', (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('consorcio/logs-consorcio.ejs', {results:results, usuarios:req.usuarios});
+        }
+    });
+});
+
+//RUTA PARA VER EL INVENTARIO PARA EL ROL CONSORCIO
+router.get('/productos-consorcio', authController.Authenticated, (req,res)=>{
+    
+    conexion.query('SELECT * FROM articulos', (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('consorcio/productos-consorcio.ejs', {results:results, usuarios:req.usuarios});
+        }
+    });
+});
+
 //router para metodos de controller
 router.post('/register', authController.register)
 router.post('/login', authController.login)

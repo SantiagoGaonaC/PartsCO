@@ -1,0 +1,73 @@
+<%- include("../admin/head.ejs") %>
+    <title>Información Usuarios Consorcio</title>
+    <meta name="description" content="">
+  </head>
+  <body>
+    <header>
+      <section>
+        <%- include("./nav-consorcio.ejs") %>
+      </section>
+    </header>
+    <div class="container position-absolute top-50 start-50 translate-middle ">
+      <div class="container shadow">
+        <div class="row">
+          <section class="">
+            <div class="container mb-5 ">
+              <h1 class="text-center mt-4">Información de usuarios</h1>
+              <div class="container mb-2">
+                <hr>
+              </div>
+              <table id="usuarios" class="table table-striped table-bordered text-center table-hover nowrap" style="width:100%">
+                <thead>
+                  <tr class="table-dark text-white">
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Rol</th>
+                    <th scope="col">Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% results.forEach((usuarios)=>{ %>
+                  <tr>
+                    <td><%= usuarios.idusuario %></td>
+                    <td><%= usuarios.nombre %></td>
+                    <td><%= usuarios.apellido %></td>
+                    <td><%= usuarios.email %></td>
+                    <td><%= usuarios.rol %></td>
+                    <td><%= usuarios.estado %></td>
+                  </tr>
+                  <%})%>
+                </tbody>
+              </table>
+            </div>
+            <hr>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function() {
+        $('#usuarios').DataTable({
+          "responsive": true,
+          "language": {
+                "lengthMenu": "Mostrar _MENU_ registros",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sSearch": "Buscar:",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast":"Último",
+                    "sNext":"Siguiente",
+                    "sPrevious": "Anterior"
+			     },
+			     "sProcessing":"Procesando...",
+            }
+        });
+      });
+    </script>
+  </body>
+</html>
