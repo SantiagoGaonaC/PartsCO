@@ -1,41 +1,190 @@
 <%- include("./head.ejs") %>
     <meta name="description" content="">
     <title>Factura</title>
-</head>
-<body class="">
-  <% if (results) { %>
-    <div class="position-absolute top-50 start-50 translate-middle">
-      <main class="form-signin card text-center border-dark p-3 mb-5">
-          <h1 class="h3 mb-3 fw-normal"><strong>Confirmación de la factura</strong></h1>
-          <table id="tabla" class="table table-bordered text-center " style="width:100%">
-            <TR><TH>ID solicitud/Factura</TH>
-              <TD><%= results.idsolicitud  %></TD></TR>
-            <TR><TH>Fecha/Hora de la solicitud</TH>
-              <TD><%= results.fecha_hora  %></TD></TR>
-            <TR><TH>Valor Total</TH>
-              <TD>$ <%= results.valor_total  %> COP</TD></TR>
-            <TR><TH>Estado solicitud</TH>
-              <TD><%= results.estado_solicitud  %></TD></TR>
-            <TR><TH>Impuestos</TH>
-              <TD>IVA 19%</TD></TR>
-            <TR><TH>ID Usuario</TH>
-              <TD><%= results.usuarios_idusuario  %></TD></TR>
-            <TR><TH>ID Articulo</TH>
-              <TD><%= results.articulos_idarticulo  %></TD></TR>
-          </table>
-        <div class="col-12">
-          <a onclick="imprimirPagina();" href="/solicitudes" class="btn text-white bg-secondary">Imprimir</a>
-          <a href="/solicitudes" class="btn text-white bg-secondary">Finalizar</a>
-          <br>
-        </div>
-          <p class="mt-1 mb-3 text-muted">&copy;Proyecto integrador PartsCO 2022-1</p>
-      </main>
-    </div>
-  <% } %>
-</body>
-<script>
-  function imprimirPagina(){
-    window.print();
-  }
-</script>
+
+		<style>
+			@media print {
+				@page {
+					size: A3;
+				}
+			}
+			ul {
+				padding: 0;
+				margin: 0 0 1rem 0;
+				list-style: none;
+			}
+			body {
+				font-family: "Inter", sans-serif;
+				margin: 0;
+			}
+			table {
+				width: 100%;
+				border-collapse: collapse;
+			}
+			table,
+			table th,
+			table td {
+				border: 1px solid silver;
+			}
+			table th,
+			table td {
+				text-align: right;
+				padding: 8px;
+			}
+			h1,
+			h4,
+			p {
+				margin: 0;
+			}
+
+			.container {
+				padding: 20px 0;
+				width: 1000px;
+				max-width: 90%;
+				margin: 0 auto;
+			}
+
+			.inv-title {
+				padding: 10px;
+				border: 1px solid silver;
+				text-align: center;
+				margin-bottom: 30px;
+			}
+
+			.inv-logo {
+				width: 150px;
+				display: block;
+				margin: 0 auto;
+				margin-bottom: 40px;
+			}
+
+			/* header */
+			.inv-header {
+				display: flex;
+				margin-bottom: 20px;
+			}
+			.inv-header > :nth-child(1) {
+				flex: 2;
+			}
+			.inv-header > :nth-child(2) {
+				flex: 1;
+			}
+			.inv-header h2 {
+				font-size: 20px;
+				margin: 0 0 0.3rem 0;
+			}
+			.inv-header ul li {
+				font-size: 15px;
+				padding: 3px 0;
+			}
+
+			/* body */
+			.inv-body table th,
+			.inv-body table td {
+				text-align: left;
+			}
+			.inv-body {
+				margin-bottom: 30px;
+			}
+
+			/* footer */
+			.inv-footer {
+				display: flex;
+				flex-direction: row;
+			}
+			.inv-footer > :nth-child(1) {
+				flex: 2;
+			}
+			.inv-footer > :nth-child(2) {
+				flex: 1;
+			}
+		</style>
+	</head>
+	<body>
+    <% if (results) { %>
+		<div class="container card">
+			<div class="inv-title">
+				<h1>Factura <%= results.idsolicitud  %></h1>
+        <p>Estado de factura: <%= results.estado_solicitud  %></p>
+			</div>
+      <img src="/public/img/logo/partsCo.svg" class="navbar-brand img-responsive logo" style="width: 5%" title="LogoPartsCO" alt="LogoPartsCO">
+			<img src="/public/img/logo/partsCo.svg" class="inv-logo" >
+			<div class="inv-header">
+				<div>
+					<h2><strong>PartsCO</strong></h2>
+					<ul>
+						<li>Consorcio AUTO-UPB</li>
+						<li>Floridablanca</li>
+						<li>partsco@partsco.com</li>
+					</ul>
+					<h2><strong><%= results.nombreUser %> <%= results.apellido %></strong></h2>
+					<ul>
+						<li>Dirección: <%= results.direccion %></li>
+						<li><%= results.documento %></li>
+						<li><%= results.telefono %> | <%= results.email %></li>
+					</ul>
+				</div>
+				<div>
+					<table>
+						<tr>
+							<th>Fecha/Hora de la Factura</th>
+							<td><%= results.FechaActual  %></td>
+						</tr>
+						<tr>
+							<th>Fecha/Hora de la Solicitud</th>
+							<td><%= results.fecha_hora  %></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="inv-body">
+				<table>
+					<thead>
+						<th>Producto ID <%= results.articulos_idarticulo  %></th>
+						<th>Cantidad</th>
+						<th>Precio</th>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<h4><%= results.nombre  %> </h4>
+								<p><%= results.descripcion  %></p>
+							</td>
+							<td>1</td>
+							<td>$ <%= results.valor_total%></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="inv-footer">
+				<div><!-- required --></div>
+				<div>
+					<table>
+						<tr>
+							<th>Sub total</th>
+							<td>$ <%= results.valor_total%></td>
+						</tr>
+						<tr>
+							<th>IVA 19%</th>
+							<td>Incluido</td>
+						</tr>
+						<tr>
+							<th>Total</th>
+							<td>$ <%= results.valor_total%> COP</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+    <% } %>
+    <center>
+      <a onclick="imprimirPagina();" href="/solicitudes" class="btn text-white bg-secondary">Imprimir</a>
+      <a href="/solicitudes" class="btn text-white bg-secondary">Finalizar</a>
+  </center>
+	</body>
+  <script>
+    function imprimirPagina(){
+      window.print();
+    }
+  </script>
 </html>

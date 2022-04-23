@@ -402,10 +402,11 @@ router.get('/crear-parte-empleado', authController.AuthenticatedAdmin, (req,res)
 //RUTA PARA CREAR LA FACTURA
 router.get('/factura/:id', authController.AuthenticatedAdmin, (req,res)=>{    
     const id = req.params.id;
-    conexion.query('SELECT * FROM solicitudes WHERE idsolicitud = ?',[id] , (error, results) => {
+    //SELECT U.idusuario, U.nombre, U.apellido, U.direccion, U.telefono, U.email, U.documento, S.idsolicitud, S.fecha_hora, S.valor_total, S.estado_solicitud, S.impuestos, S.usuarios_idusuario, S.articulos_idarticulo , A.idarticulo, A.nombre, A.descripcion, A.valor FROM usuarios U JOIN solicitudes S ON U.idusuario = S.usuarios_idusuario JOIN articulos A ON A.idarticulo = S.articulos_idarticulo where idsolicitud = ?
+    conexion.query('SELECT now() AS FechaActual, U.idusuario, U.nombre AS nombreUser, U.apellido, U.direccion, U.telefono, U.email, U.documento, S.idsolicitud, S.fecha_hora, S.valor_total, S.estado_solicitud, S.impuestos, S.usuarios_idusuario, S.articulos_idarticulo , A.idarticulo, A.nombre, A.descripcion, A.valor FROM usuarios U JOIN solicitudes S ON U.idusuario = S.usuarios_idusuario JOIN articulos A ON A.idarticulo = S.articulos_idarticulo where idsolicitud = ?',[id] , (error, results) => {
         if (error) {
             throw error;
-        }else{            
+        }else{
             res.render('admin/facturas-admin.ejs', {results:results[0],alert:false});            
         }        
     });
