@@ -77,6 +77,17 @@ class NotifySweetAlert {
         ruta: ''
     }
   }
+  ConsorcioLoginUp(){
+    return{
+        alert:true,
+        alertTitle: "Conexión exitosa",
+        alertMessage: "Login exitoso - Consorcio",
+        alertIcon: 'success',
+        showConfirmButton: false,
+        timer: 600,
+        ruta: 'panel-consorcio'
+    }
+  }
   NadaRegisterUser(){
     return{
       alert:true,

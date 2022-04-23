@@ -1,0 +1,28 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-black">
+    <div class="container">
+      <img src="/public/img/logo/partsCo.svg" class="navbar-brand img-responsive logo" style="width: 5%" title="LogoPartsCO" alt="LogoPartsCO">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/panel-consorcio">Panel</a>
+          </li>
+          <li class="nav-item">
+            <% if (usuarios) { %>
+            <span class="nav-link text-white" href="#">Nombre: <%= usuarios.nombre %></span>
+            <% } %>
+          </li>
+          <li class="nav-item">
+            <% if (usuarios) { %>
+            <span class="nav-link text-white" href="#">ID: <%= usuarios.idusuario %></span>
+            <% } %>
+          </li>
+        </ul>
+        <form class="d-flex nav-item">
+          <a href="logout" type="button" class="btn btn-primary">cerrar sesión</a>
+        </form>
+      </div>
+    </div>
+  </nav>

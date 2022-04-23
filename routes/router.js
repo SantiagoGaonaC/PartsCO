@@ -399,7 +399,6 @@ router.get('/crear-parte-empleado', authController.AuthenticatedAdmin, (req,res)
     res.render('empleado/crear-parte-empleado.ejs', {alert:false})
 });
 
-
 //RUTA PARA CREAR LA FACTURA
 router.get('/factura/:id', authController.AuthenticatedAdmin, (req,res)=>{    
     const id = req.params.id;
@@ -410,6 +409,12 @@ router.get('/factura/:id', authController.AuthenticatedAdmin, (req,res)=>{
             res.render('admin/facturas-admin.ejs', {results:results[0],alert:false});            
         }        
     });
+});
+
+
+//RUTA DEL PANEL PRINCIPAL PARA LOS DEL CONSORCIO
+router.get('/panel-consorcio', authController.Authenticated, (req,res)=>{
+    res.render('consorcio/panel-consorcio.ejs', {alert:false, usuarios:req.usuarios})
 });
 
 //router para metodos de controller

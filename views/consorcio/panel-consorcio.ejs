@@ -1,4 +1,15 @@
-<div class="">
+<%- include("../admin/head.ejs") %>
+    <meta name="description" content="">
+    <title>Consorcio</title>
+  </head>
+  <body class="">
+    <header>
+      <section>
+        <%- include("./nav-consorcio.ejs") %>
+      </section>
+    </header>
+    <div class="container row position-absolute top-50 start-50 translate-middle">
+      <div class="">
     <div class="card-deck">
       <div class="row justify-content-center g-3">
         <div class="col-auto ">
@@ -6,7 +17,7 @@
             <div class="card-body">
               <h5 class="card-title">Información de Usuarios</h5>
               <p class="card-text">Crear, actualizar, buscar y eliminar usuarios.</p>
-              <a href="/admin" class="btn btn-primary">Ir</a>
+              <a href="/usuarios-consorcio" class="btn btn-primary">Ir</a>
             </div>
           </div>
         </div>
@@ -15,7 +26,7 @@
             <div class="card-body">
               <h5 class="card-title">Historial ingreso Usuarios</h5>
               <p class="card-text">Listados inicio de sesión</p>
-              <a href="/logs" class="btn btn-primary">Ir</a>
+              <a href="/logs-consorcio" class="btn btn-primary">Ir</a>
             </div>
           </div>
         </div>
@@ -24,29 +35,13 @@
             <div class="card-body">
               <h5 class="card-title">Información de productos</h5>
               <p class="card-text">Crear, actualizar, buscar y eliminar productos.</p>
-              <a href="/productos" class="btn btn-primary">Ir</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-auto">
-          <div class="card shadow text-center" style="width: 18rem;">
-            <div class="card-body">
-              <h5 class="card-title">Solicitudes y Facturas</h5>
-              <p class="card-text">Lista de solicitudes y Facturas</p>
-              <a href="/solicitudes" class="btn btn-primary">Ir</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-auto">
-          <div class="card shadow text-center" style="width: 18rem;">
-            <div class="card-body">
-              <h5 class="card-title">Descuentos</h5>
-              <p class="card-text">Mostrar descuentos disponibles</p>
-              <a href="/descuentos-admin" class="btn btn-primary">Ir</a>
+              <a href="/productos-consorcio" class="btn btn-primary">Ir</a>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+    </div>
+  </body>
+</html>
