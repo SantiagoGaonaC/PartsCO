@@ -315,6 +315,7 @@ router.get('/create-empleado', authController.AuthenticatedAdmin, (req,res)=>{
     res.render('empleado/create-empleado', {alert:false})
 });
 
+
 //RUTA EDITAR USUARIO, SE ENCUENTRA DENTRO DEL PANEL DE (INFORMACION Y GESTIÓN DE USUARIOS) COMO BOTÓN
 router.get('/edit-empleado/:id', authController.AuthenticatedAdmin, (req,res)=>{    
     const id = req.params.id;
