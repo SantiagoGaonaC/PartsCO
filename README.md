@@ -60,3 +60,68 @@ _El siguiente proyecto integrador buscar enfatizar en diferentes tecnologías de
 * Listas de pendientes del Sprint (Sprint Backlogs) ❌
 * Artículo, Informe final (IEEE Template) ❌
 * Acta de entrega y cierre del Proyecto Integrador ❌
+
+## VISTAS (solo principales)
+
+### Login
+<p align="center">
+  <img src="https://i.imgur.com/9uiZIUo.png" width="680px"/>
+</p>
+
+### Registro
+<p align="center">
+  <img src="https://i.imgur.com/Gg3PtxY.png" width="680px"/>
+</p>
+
+### Catálogo de Productos | Usuarios
+<p align="center">
+  <img src="https://i.imgur.com/IHSxN20.png" width="680px"/>
+</p>
+
+### Descuentos | Usuarios
+<p align="center">
+  <img src="https://i.imgur.com/9DeTEPa.png" width="680px"/>
+</p>
+
+### Descuentos | Usuarios
+<p align="center">
+  <img src="https://i.imgur.com/9DeTEPa.png" width="680px"/>
+</p>
+
+### Opciones | ROL: Consorcio
+<p align="center">
+  <img src="https://i.imgur.com/BLkpfGZ.png" width="680px"/>
+</p>
+
+### Opciones | ROL: Admin
+<p align="center">
+  <img src="https://i.imgur.com/TuVJVda.png" width="680px"/>
+</p>
+
+### Info y gestión usuarios | ROL: Admin
+<p align="center">
+  <img src="https://i.imgur.com/qnSsQqt.png" width="680px"/>
+</p>
+
+### Historial ingreso de usuarios | ROL: Admin,Empleado y Consorcio
+<p align="center">
+  <img src="https://i.imgur.com/JUV2AyC.png" width="680px"/>
+</p>
+
+### Catálogo de partes | ROL: Admin,Empleado
+<p align="center">
+  <img src="https://i.imgur.com/uKroyWy.png" width="680px"/>
+</p>
+
+### Gestión Solicitudes | ROL: Admin,Empleado
+<p align="center">
+  <img src="https://i.imgur.com/Oktf79q.png" width="680px"/>
+</p>
+
+### Gestión de descuentos | ROL: Admin,Empleado
+<p align="center">
+  <img src="https://i.imgur.com/hPci6y7.png" width="680px"/>
+</p>
+
+
+
