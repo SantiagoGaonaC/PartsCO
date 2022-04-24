@@ -94,7 +94,8 @@ router.get('/panel', authController.AuthenticatedAdmin, (req,res)=>{
 
 //Logs USUARIO | Historial | DEBE ESTAR LOGUEADO COMO ROL ADMIN
 router.get('/logs', authController.AuthenticatedAdmin, (req,res)=>{
-    conexion.query('SELECT * FROM sesiones', (error, results)=>{
+    //SELECT S.idsesion, S.fecha_sesion,U.idusuario,U.nombre FROM usuarios U JOIN sesiones S ON U.idusuario = S.usuarios_idusuario;
+    conexion.query('SELECT S.idsesion, S.fecha_sesion,U.idusuario,U.nombre,U.apellido FROM usuarios U JOIN sesiones S ON U.idusuario = S.usuarios_idusuario', (error, results)=>{
         if(error){
             throw error;
         }else{
@@ -182,7 +183,7 @@ router.get('/crear-parte', authController.AuthenticatedAdmin, (req,res)=>{
 //SOLICITUDES EDITAR Y BORRAR LAS SOLICITUDES DE LOS USUARIOS
 router.get('/solicitudes', authController.AuthenticatedAdmin, (req,res)=>{
     
-    conexion.query('SELECT * FROM solicitudes', (error, results)=>{
+    conexion.query('SELECT *,U.nombre AS nombreUser FROM solicitudes S JOIN usuarios U ON U.idusuario = S.usuarios_idusuario JOIN articulos A ON A.idarticulo = S.articulos_idarticulo', (error, results)=>{
         if(error){
             throw error;
         }else{
@@ -364,7 +365,7 @@ router.get('/delete-empleado/:id', authController.AuthenticatedAdmin, (req, res)
 
 //ROUTER DE LOG PARA EL PANEL EMPLEADO
 router.get('/logs-empleados', authController.AuthenticatedAdmin, (req,res)=>{
-    conexion.query('SELECT * FROM sesiones', (error, results)=>{
+    conexion.query('SELECT S.idsesion, S.fecha_sesion,U.idusuario,U.nombre,U.apellido FROM usuarios U JOIN sesiones S ON U.idusuario = S.usuarios_idusuario', (error, results)=>{
         if(error){
             throw error;
         }else{
@@ -435,7 +436,7 @@ router.get('/usuarios-consorcio', authController.Authenticated, (req,res)=>{
 
 //RUTA PARA VER LOGS DE INGRESO USUARIOS PARA EL ROL CONSORCIO
 router.get('/logs-consorcio', authController.Authenticated, (req,res)=>{
-    conexion.query('SELECT * FROM sesiones', (error, results)=>{
+    conexion.query('SELECT S.idsesion, S.fecha_sesion,U.idusuario,U.nombre,U.apellido FROM usuarios U JOIN sesiones S ON U.idusuario = S.usuarios_idusuario', (error, results)=>{
         if(error){
             throw error;
         }else{

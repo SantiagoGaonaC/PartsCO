@@ -20,9 +20,9 @@
                 <tr class="table-dark text-white">
                   <th scope="col">ID solicitud</th>
                   <th scope="col">Fecha</th>
-                  <th scope="col">Usuario</th>    
+                  <th scope="col">Usuario | ID</th>    
                   <th scope="col">Valor total</th>
-                  <th scope="col">ID Articulo</th>
+                  <th scope="col">Nombre | ID Articulo</th>
                   <th scope="col">Estado</th>
                   <th scope="col">Acciones</th>
                 </tr>
@@ -32,9 +32,9 @@
                 <tr>
                   <td><%= solicitudes.idsolicitud %></td>
                   <td><%= solicitudes.fecha_hora %></td>
-                  <td><%= solicitudes.usuarios_idusuario %></td>
+                  <td><%= solicitudes.nombreUser %> <%= solicitudes.apellido %> | <%= solicitudes.usuarios_idusuario %></td>
                   <td>$ <%= solicitudes.valor_total %></td>
-                  <td><%= solicitudes.articulos_idarticulo %></td>
+                  <td><%= solicitudes.nombre %> | <%= solicitudes.articulos_idarticulo %></td>
                   <td><%= solicitudes.estado_solicitud %></td>
                   <td>
                     <a onclick="estado(<%= solicitudes.idsolicitud %>)" class="btn btn-outline-success"><i class="fa-solid fa-exchange"></i></i></a>
