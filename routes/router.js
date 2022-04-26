@@ -552,6 +552,45 @@ router.get('/factura-e/:id', authController.AuthenticatedAdmin, (req,res)=>{
 });
 
 
+//RUTA PARA LA VISTA DESCUENTOS DENTRO DEL ROL EMPLEADO
+router.get('/descuentos-empleado', authController.AuthenticatedAdmin, (req,res)=>{
+
+    conexion.query('SELECT * FROM descuentos', (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('empleado/descuentos-empleado.ejs', {results:results,usuarios:req.usuarios});
+        }
+    });
+});
+
+
+//EDITAR LOS DESCUENTOS EMPLEADO
+router.get('/editar-descuento-e/:id', authController.AuthenticatedAdmin, (req,res)=>{    
+    const id = req.params.id;
+    conexion.query('SELECT * FROM descuentos WHERE iddescuentos = ?',[id] , (error, results) => {
+        if (error) {
+            throw error;
+        }else{            
+            res.render('empleado/editar-descuento-empleado.ejs', {descuentos:results[0],alert:false});            
+        }        
+    });
+});
+//BORRAR LOS DESCUENTOS EMPLEADO
+router.get('/borrar-descuento-e/:id', authController.AuthenticatedAdmin, (req, res) => {
+    const id = req.params.id;
+    conexion.query('DELETE FROM descuentos WHERE iddescuentos = ?',[id], (error, results)=>{
+        if(error){
+            console.log(error);
+        }else{           
+            res.redirect('/descuentos-empleado');         
+        }
+    })
+});
+//RUTA PARA CREAR DESCUENTO EMPLEADO
+router.get('/crear-descuento-empleado', authController.AuthenticatedAdmin, (req,res)=>{
+    res.render('empleado/crear-descuento-empleado.ejs', {alert:false})
+});
 
 //router para metodos de controller
 router.post('/register', authController.register)
@@ -561,11 +600,13 @@ router.post('/create-empleado', authController.registerEmpleado) //Crear USUARIO
 router.post('/update', crud.update) //Actualizar USUARIOS por parte del ADMIN
 router.post('/update-empleado', crud.updateEmpleado) //Actualizar USUARIOS por parte del EMPLEADO
 router.post('/descuentosA', crud.descuentosA)
+router.post('/descuentosEmpleado', crud.descuentosEmpleado)
 
 router.post('/actualizarproductos', crud.actualizarproductos) //actualizarProductos
 router.post('/crearproductos', crud.crearpartes)//ADMIN
 router.post('/crearproductosEmpleado', crud.crearpartesEmpleado)//EMPLEADO
 router.post('/crear-descuentos', crud.crearDescuento)
+router.post('/crear-descuentos-empleado', crud.crearDescuentoEmpleado)
 router.get('/logout', authController.logout)
 
 module.exports = router
