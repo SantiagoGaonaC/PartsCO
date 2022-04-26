@@ -457,7 +457,7 @@ router.get('/productos-consorcio', authController.Authenticated, (req,res)=>{
     });
 });
 
-
+//RUTA PARA HISTORICO DE PRECIOS PARA EL ROL ADMIN 
 router.get('/historico-precios', authController.AuthenticatedAdmin, (req,res)=>{
     conexion.query('SELECT A.idarticulo,A.valor,A.nombre,H.precio,H.idHarticulo,H.idHPrecios FROM articulos A JOIN hprecios H ON A.idarticulo = H.idHarticulo', (error, results)=>{
         if(error){
@@ -467,6 +467,19 @@ router.get('/historico-precios', authController.AuthenticatedAdmin, (req,res)=>{
         }
     });
 });
+
+//RUTA PARA HISTORICO DE PRECIOS PARA EL ROL EMPLEADO
+router.get('/historico-precios-empleado', authController.AuthenticatedAdmin, (req,res)=>{
+    conexion.query('SELECT A.idarticulo,A.valor,A.nombre,H.precio,H.idHarticulo,H.idHPrecios FROM articulos A JOIN hprecios H ON A.idarticulo = H.idHarticulo', (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('empleado/historico-precios.ejs', {results:results});
+        }
+    });
+});
+
+
 
 //router para metodos de controller
 router.post('/register', authController.register)
