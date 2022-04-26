@@ -479,6 +479,78 @@ router.get('/historico-precios-empleado', authController.AuthenticatedAdmin, (re
     });
 });
 
+//RUTA PARA VER LAS SOLICITUDES ROL EMPLEADO
+router.get('/solicitudes-empleado', authController.AuthenticatedAdmin, (req,res)=>{
+    
+    conexion.query('SELECT *,U.nombre AS nombreUser FROM solicitudes S JOIN usuarios U ON U.idusuario = S.usuarios_idusuario JOIN articulos A ON A.idarticulo = S.articulos_idarticulo', (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('empleado/solicitudes-empleado.ejs', {results:results});
+        }
+    });
+});
+
+//RUTA DE ACCIÓN PARA CAMBIAR EL ESTADO DE LA SOLICITUD ROL EMPLEADO
+router.get('/terminar-solicitud-empleado/:id', authController.AuthenticatedAdmin, (req, res) => {
+    const id = req.params.id;
+    const query1 = 'select estado_solicitud from solicitudes where idsolicitud = ?'
+
+    conexion.query(query1,[id], (error, results)=>{
+        if(error){
+            console.log(error);
+        }else{      
+            const json = JSON.parse(JSON.stringify(results[0]));
+            const estado = json[Object.keys(json)];
+            if (estado=='No Terminada'){
+                const terminada = 'Terminada';
+                conexion.query('UPDATE solicitudes SET estado_solicitud= ? WHERE idsolicitud = ?',[terminada,id], (error, results)=>{
+                    if(error){
+                        console.log(error);
+                    }else{      
+                        res.redirect('/solicitudes-empleado');   
+                    }
+                })
+            }else{
+                const noTerminada = 'No Terminada';
+                conexion.query('UPDATE solicitudes SET estado_solicitud= ? WHERE idsolicitud = ?',[noTerminada,id], (error, results)=>{
+                    if(error){          
+                        console.log(error);
+                    }else{      
+                        res.redirect('/solicitudes-empleado');         
+                    }
+                })
+            }  
+        }
+    })
+});
+
+//RUTA DE ACCIÓN PARA ELIMINAR LA SOLICITUD ROL EMPLEADO
+router.get('/eliminar-solicitud-empleado/:id', authController.AuthenticatedAdmin, (req, res) => {
+    const id = req.params.id;
+    conexion.query('DELETE FROM solicitudes WHERE idsolicitud = ?',[id], (error, results)=>{
+        if(error){
+            console.log(error);
+        }else{           
+            res.redirect('/solicitudes-empleado');         
+        }
+    })
+});
+
+
+//RUTA PARA LA VISTA FACTURA DENTRO DEL ROL EMPLEADO
+router.get('/factura-e/:id', authController.AuthenticatedAdmin, (req,res)=>{    
+    const id = req.params.id;
+    //SELECT U.idusuario, U.nombre, U.apellido, U.direccion, U.telefono, U.email, U.documento, S.idsolicitud, S.fecha_hora, S.valor_total, S.estado_solicitud, S.impuestos, S.usuarios_idusuario, S.articulos_idarticulo , A.idarticulo, A.nombre, A.descripcion, A.valor FROM usuarios U JOIN solicitudes S ON U.idusuario = S.usuarios_idusuario JOIN articulos A ON A.idarticulo = S.articulos_idarticulo where idsolicitud = ?
+    conexion.query('SELECT now() AS FechaActual, U.idusuario, U.nombre AS nombreUser, U.apellido, U.direccion, U.telefono, U.email, U.documento, S.idsolicitud, S.fecha_hora, S.valor_total, S.estado_solicitud, S.impuestos, S.usuarios_idusuario, S.articulos_idarticulo , A.idarticulo, A.nombre, A.descripcion, A.valor FROM usuarios U JOIN solicitudes S ON U.idusuario = S.usuarios_idusuario JOIN articulos A ON A.idarticulo = S.articulos_idarticulo where idsolicitud = ?',[id] , (error, results) => {
+        if (error) {
+            throw error;
+        }else{
+            res.render('empleado/facturas-empleado.ejs', {results:results[0],alert:false});            
+        }        
+    });
+});
+
 
 
 //router para metodos de controller
