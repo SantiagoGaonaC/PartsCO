@@ -83,19 +83,14 @@ _El siguiente proyecto integrador buscar enfatizar en diferentes tecnologías de
   <img src="https://i.imgur.com/9DeTEPa.png" width="680px"/>
 </p>
 
-### Descuentos | Usuarios
-<p align="center">
-  <img src="https://i.imgur.com/9DeTEPa.png" width="680px"/>
-</p>
-
 ### Opciones | ROL: Consorcio
 <p align="center">
   <img src="https://i.imgur.com/BLkpfGZ.png" width="680px"/>
 </p>
 
-### Opciones | ROL: Admin
+### Opciones | ROL: Admin, Empleado
 <p align="center">
-  <img src="https://i.imgur.com/TuVJVda.png" width="680px"/>
+  <img src="https://i.imgur.com/Ruj4why.png" width="680px"/>
 </p>
 
 ### Info y gestión usuarios | ROL: Admin
@@ -121,6 +116,16 @@ _El siguiente proyecto integrador buscar enfatizar en diferentes tecnologías de
 ### Gestión de descuentos | ROL: Admin,Empleado
 <p align="center">
   <img src="https://i.imgur.com/hPci6y7.png" width="680px"/>
+</p>
+
+### Factura | ROL: Admin,Empleado
+<p align="center">
+  <img src="https://i.imgur.com/N172gUo.png" width="680px"/>
+</p>
+
+### Historico de Precios | ROL: Admin,Empleado
+<p align="center">
+  <img src="https://i.imgur.com/kyv02dP.png" width="680px"/>
 </p>
 
 
