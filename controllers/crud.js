@@ -64,7 +64,7 @@ exports.actualizarproductos = (req, res)=>{
     const descripcion = req.body.descripcion
     const categoria = req.body.categoria
 
-    conexion.query('INSERT INTO HPrecios (select valor, idarticulo FROM articulos WHERE idarticulo = ?)',[idarticulo]);
+    conexion.query('INSERT INTO HPrecios (select NULL, valor, idarticulo FROM articulos WHERE idarticulo = ?)',[idarticulo]);
     conexion.query('UPDATE articulos SET ? WHERE idarticulo = ?',[{nombre:nombre, stock:stock, valor:valor, estado:estado,descripcion:descripcion, categoria:categoria}, idarticulo], (error, results)=>{
         if(error){
             console.log(error);

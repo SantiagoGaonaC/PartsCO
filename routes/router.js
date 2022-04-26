@@ -457,6 +457,17 @@ router.get('/productos-consorcio', authController.Authenticated, (req,res)=>{
     });
 });
 
+
+router.get('/historico-precios', authController.AuthenticatedAdmin, (req,res)=>{
+    conexion.query('SELECT A.idarticulo,A.valor,A.nombre,H.precio,H.idHarticulo,H.idHPrecios FROM articulos A JOIN hprecios H ON A.idarticulo = H.idHarticulo', (error, results)=>{
+        if(error){
+            throw error;
+        }else{
+            res.render('admin/historico-precios.ejs', {results:results});
+        }
+    });
+});
+
 //router para metodos de controller
 router.post('/register', authController.register)
 router.post('/login', authController.login)
