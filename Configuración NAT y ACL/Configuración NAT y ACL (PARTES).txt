@@ -1,0 +1,148 @@
+CONFIGURACIÓ DE LA NAT (NUEVO)
+PRELIMINARES
+1. Modificar las IP de los seriales para usar una red /30 en lugar de /24
+2. Modificar el OSPF actual:
+3. Ruta por defecto:
+::Interfaz que recibe la comunicación desde Cosecionario 1
+RouterP(config)#interface Serial 0/0/0
+RouterP(config-if)#ip address 10.10.60.2 255.255.255.252
+RouterP(config-if)#ipv6 add 2801:0:2E0:1::16/126
+RouterP(config-if)#exit
+RouterP(config)#
+::Interfaz que envía la comunicación hacia Accesorios
+RouterP(config)#interface Serial 0/0/1
+RouterP(config-if)#ip address 10.10.70.1 255.255.255.252
+RouterP(config-if)#ipv6 add 2801:2:2e0:1:0::11/126
+RouterP(config-if)#exit
+::Eliminar el OSPF actual
+RouterA(config)#no router ospf 1
+::Agregar el nuevo OSPF
+RouterA(config)#router ospf 1
+::Redes que se conectan por los seriales:
+RouterP(config-router)#network 10.10.60.0 0.0.0.3 area 0
+RouterP(config-router)#network 10.10.70.0 0.0.0.3 area 0
+:: Configurar el OSPF V6
+RouterA(config)#ipv6 router ospf 1
+RouterA(config-rtr)#exit
+RouterA(config)#
+RouterA(config)#inter
+RouterA(config)#interface S
+RouterA(config)#interface Serial 0/0/0
+RouterA(config-if)#ipv6 ospf 1 area 0
+RouterA(config-if)#exit
+RouterA(config)#
+RouterA(config)#interface Serial 0/0/1
+RouterA(config-if)#ipv6 ospf 1 area 0
+RouterA(config-if)#exit
+RouterA(config)#exit
+::Ip de accesorios (Serial)
+RouterA(config)#ip route 0.0.0.0 0.0.0.0 10.10.70.2
+RouterA(config)#ipv6 route ::/0 Serial 0/0/1
+CON LA CONFIGURACIÓN ANTERIOR YA ES POSIBLE HACER PING ENTRE TODOS LOS
+ROUTERS DE LAS EMPRESAS
+NAT
+1. Definir la zona interna y externa
+2. Definir la traducción de puertos estática:
+:: Ambas interfaces seriales se deben definir como outside (Esto es para
+packet tracer, adaptarlo a las interfaces de cada uno)
+RouterA(config)#interface Serial 0/0/1
+RouterA(config-if)#ip nat outside
+RouterA(config-if)#exit
+RouterA(config)#interface Serial 0/0/0
+RouterA(config-if)#ip nat outside
+RouterA(config-if)#exit
+RouterA(config)#
+:: Las zonas internas son todas las subinterfaces de nuestra LAN (Esto es
+para packet tracer, adaptarlo a las interfaces de cada uno)
+RouterA(config)#interface GigabitEthernet 0/0
+RouterA(config-if)#ip nat inside
+RouterA(config-if)#exit
+RouterA(config)#interface GigabitEthernet 0/0.2
+RouterA(config-subif)#ip nat inside
+RouterA(config-subif)#exit
+RouterA(config)#
+:: Esto es solo para packet tracer, adaptar a las ip de los servidores de
+cada uno
+:: En este caso solo se configura el servicio HTTP y HTTPS
+RouterP(config)#ip nat inside source static tcp 192.168.40.27 80 10.10.70.1
+80
+RouterP(config)#ip nat inside source static tcp 192.168.40.27 433 10.10.70.1
+433
+:: También se configura el DNS
+RouterP(config)#ip nat inside source static udp 192.168.40.27 53 10.10.70.1
+53
+:: Servicio de correo
+RouterP(config)#ip nat inside source static udp 192.168.40.27 110 10.10.70.1
+110
+RouterP(config)#ip nat inside source static udp 192.168.40.27 25 10.10.70.1
+25
+RouterP(config)#ip nat inside source static tcp 192.168.40.27 110 10.10.70.1
+110
+RouterP(config)#ip nat inside source static tcp 192.168.40.27 25 10.10.70.1
+25
+UNA VEZ CONFIGURADO LO ANTERIOR TODOS DEBERÍAMOS PODER VER LAS PÁGINAS DE
+LOS DEMÁS POR MEDIO DE LA IP DEL NAT
+LISTAS DE CONTROL DE ACCESO:
+1. Definir la lista para la red externa:
+2. Aplicar la lista en los seriales:
+NOTA: Esta sección (ACL para red interna) está con las direcciones IP de la empresa de
+accesorios, adaptarlo a cada empresa
+3. Definir la lista para la red interna:
+RouterA(config)#access-list 101 permit ospf any any
+:: Entradas para permitir HTTP y HTTPS
+RouterA(config)#access-list 101 permit tcp any any eq www
+RouterA(config)#access-list 101 permit tcp any any eq 443
+:: Entrada para permitir la resolución de DNS
+RouterA(config)#access-list 101 permit udp any any eq domain
+::Entrada para permitir el tráfico mail
+RouterA(config)#access-list 101 permit tcp any any eq pop3
+RouterA(config)#access-list 101 permit tcp any any eq smtp
+RouterA(config)#access-list 101 permit udp any any eq 110
+RouterA(config)#access-list 101 permit udp any any eq 25
+:: Denegar cualquier petición icmp a la red interna
+RouterM(config)#access-list 101 deny icmp any 192.168.40.0 0.0.0.255
+:: Permitir demás acciones de IP (Esto es para que el enrutamiento funcione
+bien)
+RouterA(config)#access-list 101 permit ip any any
+RouterA(config)#interface Serial 0/0/0
+RouterA(config-if)#ip access-group 101 in
+RouterA(config-if)#exit
+RouterA(config)#
+RouterA(config)#interface Serial 0/0/1
+RouterA(config-if)#ip access-group 101 in
+RouterA(config-if)#exit
+4. Asignar la lista creada a las interfaces internas
+IMPORTANTE: Internamente, los host de la LAN utilizan la dirección privada de los servidores,
+pero externamente todos debemos usar la dirección de la NAT de las otras empresas.
+UNA VEZ CONFIGUIRADO TODO LO ANTERIOR, PODRÍAMOS ACCEDER A LOS SERVICIOS DE
+LOS DEMÁS (COMO LA PÁGINA WEB) MEDIANTE LA DIRECCIÓN DE LA NAT DE CADA EMPRESA
+CON EL PUERTO ESPECÍFICO (NORMALMENTE NO ES NECESARIO PONER EL PUERTO)
+Ahora:
+Cada empresa deberá agregar la dirección NAT de las demás como servidor DNS.
+En los DNS cada emrpesa deberá tener la entrada para IP del NAT y la entrada para IP
+interna de cada servicio, por ejemplo:
+accesorios.autoupb.com TYPE A 192.168.70.5 (Dirección interna del servidor)
+accesorios.autoupb.com TYPE A 10.10.20.1 (Dirección del NAT)
+Es importante que las entradas se agregenen el el orden anterior (Primero la ip interna y
+luego la de la NAT)
+:: Se niega la comunicación desde la VLAN 1 hacia todas las demás (Con esto
+funcionaría en ambas direcciones)
+RouterA(config)#access-list 102 deny icmp 192.168.40.0 0.0.0.127
+192.168.70.128 0.0.0.15
+RouterA(config)#access-list 102 deny icmp 192.168.40.0 0.0.0.127
+192.168.70.144 0.0.0.7
+RouterA(config)#access-list 102 deny icmp 192.168.40.0 0.0.0.127
+192.168.70.152 0.0.0.3
+:: Este es solo para packet tracer
+RouterA(config)#access-list 102 deny icmp 192.168.40.0 0.0.0.15
+192.168.70.16 0.0.0.15
+:: Finalmente, ser permite todo lo demás
+RouterA(config)#access-list 102 permit ip any any
+RouterA(config)#interface GigabitEthernet 0/0.1
+RouterA(config-subif)#ip access-group 102 in
+RouterA(config-subif)#exit
+RouterA(config)#
+RouterA(config)#interface GigabitEthernet 0/0.2
+RouterA(config-subif)#ip access-group 102 in
+RouterA(config-subif)#exit
+RouterA(config)#
